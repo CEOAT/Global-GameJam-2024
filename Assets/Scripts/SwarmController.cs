@@ -1,17 +1,40 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace GGJ2024
 {
     [RequireComponent(typeof(SpriteRenderer))]
     public class SwarmController : MonoBehaviour
     {
+        public Vector2 FillerSize
+        {
+            get => fillerSize;
+            set
+            {
+                fillerSize = value;
+                RefreshVertices();
+            }
+        }
+
+        public Vector2 Spacing
+        {
+            get => spacing;
+            set
+            {
+                spacing = value;
+                RefreshVertices();
+            }
+        }
+        
         [SerializeField] Vector2 fillerSize = Vector2.one;
         [SerializeField] Vector2 spacing;
-        [SerializeField] float spread = 1f;
-        [SerializeField] Vector2 randomMagnitude;
-
+        
+        public float spread = 1f;
+        public Vector2 randomMagnitude;
+        
         float currentDelay;
         List<Vector3> vertexList = new List<Vector3>();
         List<Movement> movementList = new List<Movement>();
@@ -21,6 +44,17 @@ namespace GGJ2024
         {
             spriteRenderer = GetComponent<SpriteRenderer>();
             spriteRenderer.enabled = false;
+            RefreshVertices();
+        }
+
+        void OnValidate()
+        {
+            if (!Application.isPlaying)
+                return;
+            
+            if (spriteRenderer == null)
+                spriteRenderer = GetComponent<SpriteRenderer>();
+
             RefreshVertices();
         }
 
