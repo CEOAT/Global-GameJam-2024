@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -37,7 +36,7 @@ namespace GGJ2024
         
         float currentDelay;
         List<Vector3> vertexList = new List<Vector3>();
-        List<Movement> movementList = new List<Movement>();
+        List<Ant> movementList = new List<Ant>();
         SpriteRenderer spriteRenderer;
 
         void Awake()
@@ -135,14 +134,14 @@ namespace GGJ2024
                 Random.Range(-randomMagnitude.y, randomMagnitude.y));
         }
 
-        public void Register(Movement movement)
+        public void Register(Ant ant)
         {
-            movementList.Add(movement);
+            movementList.Add(ant);
         }
 
-        public void Unregister(Movement movement)
+        public void Unregister(Ant ant)
         {
-            movementList.Remove(movement);
+            movementList.Remove(ant);
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.Pool;
-using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 namespace GGJ2024
@@ -10,6 +9,7 @@ namespace GGJ2024
         [SerializeField] T prefab;
         [SerializeField] int startUpCount = 100;
         [SerializeField] int defaultCapacity = 10;
+        [SerializeField] int targetCount = 1000;
         [SerializeField] int maxSize = 1000000;
         [SerializeField] float minSpawnDelay = 0;
         [SerializeField] float maxSpawnDelay = 1f;
@@ -42,6 +42,9 @@ namespace GGJ2024
 
         void Update()
         {
+            if (pool.CountActive >= targetCount)
+                return;
+            
             if (currentDelayLeft > 0)
             {
                 currentDelayLeft -= Time.deltaTime;
@@ -58,9 +61,14 @@ namespace GGJ2024
             return Random.Range(minSpawnDelay, maxSpawnDelay);
         }
 
-        T Spawn()
+        public T Spawn()
         {
             return pool.Get();
+        }
+
+        public void Release(T target)
+        {
+            pool.Release(target);
         }
     }
 }

@@ -414,18 +414,6 @@ PrefabInstance:
       value: Spawner
       objectReference: {fileID: 0}
     - target: {fileID: 6988565896109712552, guid: 3119412ed6a11404094d1fd442406f6e, type: 3}
-      propertyPath: maxSize
-      value: 500
-      objectReference: {fileID: 0}
-    - target: {fileID: 6988565896109712552, guid: 3119412ed6a11404094d1fd442406f6e, type: 3}
-      propertyPath: startUpCount
-      value: 500
-      objectReference: {fileID: 0}
-    - target: {fileID: 6988565896109712552, guid: 3119412ed6a11404094d1fd442406f6e, type: 3}
-      propertyPath: defaultCapacity
-      value: 500
-      objectReference: {fileID: 0}
-    - target: {fileID: 6988565896109712552, guid: 3119412ed6a11404094d1fd442406f6e, type: 3}
       propertyPath: swarmController
       value: 
       objectReference: {fileID: 498276741}

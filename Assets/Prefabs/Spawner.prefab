@@ -45,9 +45,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefab: {fileID: 2248218639446803560, guid: 8b5ee966ba7ce01468a6311fff3c26a6, type: 3}
-  startUpCount: 1000
-  defaultCapacity: 1000
-  maxSize: 1000000
+  startUpCount: 500
+  defaultCapacity: 500
+  targetCount: 500
+  maxSize: 500
   minSpawnDelay: 0
   maxSpawnDelay: 1
   swarmController: {fileID: 0}
