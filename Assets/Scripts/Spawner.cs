@@ -36,9 +36,9 @@ namespace GGJ2024
                 Spawn();
         }
 
-        protected abstract void OnRetrieve(T obj);
-        protected abstract void OnRelease(T obj);
-        protected abstract void OnElementDestroy(T obj);
+        protected abstract void OnRetrieve(T ant);
+        protected abstract void OnRelease(T ant);
+        protected abstract void OnElementDestroy(T ant);
 
         void Update()
         {
