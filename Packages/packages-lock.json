@@ -54,6 +54,15 @@
         "com.unity.searcher": "4.9.2"
       }
     },
+    "com.unity.textmeshpro": {
+      "version": "3.0.7",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.ugui": "1.0.0"
+      },
+      "url": "https://packages.unity.com"
+    },
     "com.unity.ugui": {
       "version": "1.0.0",
       "depth": 1,
