@@ -473,6 +473,7 @@ MonoBehaviour:
   tempTime: 0
   damageRange: 3
   damageTime: 5
+  fireArea: {fileID: 550757448012481241, guid: dc7a4d87a21ed444ba8bb0f1bb732cc0, type: 3}
 --- !u!4 &699816837
 Transform:
   m_ObjectHideFlags: 0
