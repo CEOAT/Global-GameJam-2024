@@ -15,22 +15,26 @@ public abstract class BaseKillStreak : MonoBehaviour
 
     public void Initilize()
     {
-        maxAmmo = currentAmmo;
+        currentAmmo = maxAmmo;
     }
-    public virtual void Fire(Vector2 mousePosition)
+    public void Fire(Vector2 mousePosition)
     {
-        if(tempTime < fireRate)
+        if(tempTime > 0)
             return;
         
-        tempTime = 0;
+        OnFire(mousePosition);
+
+        tempTime = fireRate;
         currentAmmo--;
 
         if(currentAmmo <= 0)
             KillStreakManager.Inst.OnOutOfAmmo();
     }
 
-    void Update() 
+    public abstract void OnFire(Vector2 mousePosition);
+
+    protected virtual void Update() 
     {
-        tempTime += Time.deltaTime;
+        tempTime -= Time.deltaTime;
     }
 }
