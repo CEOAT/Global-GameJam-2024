@@ -14,7 +14,7 @@ public class DamageTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other) 
     {
-        if(other.tag == "Enemy" && other.isTrigger)
+        if(other.tag == "Ant" && other.isTrigger)
         {
             GetComponent<Ant>().TakeDamage(damage);
         }

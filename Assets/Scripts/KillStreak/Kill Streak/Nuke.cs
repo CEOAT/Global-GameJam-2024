@@ -21,7 +21,7 @@ public class Nuke : BaseKillStreak
     private bool isFadeOut;
     private float alphaValue;
 
-    public override void Fire(Vector2 mousePosition)
+    public override void OnFire(Vector2 mousePosition)
     {
         CreateNuke(mousePosition);
     }
@@ -32,7 +32,7 @@ public class Nuke : BaseKillStreak
 
     private void Start()
     {
-        CreateNuke(new Vector2(0,0));
+        //CreateNuke(new Vector2(0,0));
     }
 
     private void FixedUpdate()

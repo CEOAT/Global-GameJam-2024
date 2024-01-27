@@ -17,7 +17,7 @@ public class CatRumble : BaseKillStreak
         Gizmos.DrawLine(startPosition, endPosition);
     }
 
-    public override void Fire(Vector2 mousePosition)
+    public override void OnFire(Vector2 mousePosition)
     {
         CreateCatTransform();
     }
