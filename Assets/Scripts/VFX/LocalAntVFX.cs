@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using GGJ2024;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -8,6 +9,7 @@ public class LocalAntVFX : MonoBehaviour
 {
   [SerializeField] private Animator _smoke;
   [SerializeField] private ParticleSystem Blood;
+  [SerializeField] private SpriteRenderer _antVisual;
   private float TimeToClear;
  
   private void Start()
@@ -19,14 +21,13 @@ public class LocalAntVFX : MonoBehaviour
 
   private void GetTimeToclear()
   {
-    Debug.Log(_smoke.GetCurrentAnimatorStateInfo(0).length);
     TimeToClear = Blood.main.startLifetime.constantMax +(Mathf.Abs(Blood.main.startLifetime.constantMax- _smoke.GetCurrentAnimatorStateInfo(0).length));
-    Debug.Log(TimeToClear);
   }
 
   [Button]
   public void ExplodeKill()
   {
+    _antVisual.gameObject.SetActive(false);
     _smoke.enabled = true;
     _smoke.Play("Smoke",-1,0);
     GetTimeToclear();
@@ -36,6 +37,7 @@ public class LocalAntVFX : MonoBehaviour
 
   public void ClearTemp()
   {
+    _antVisual.gameObject.SetActive(true);
     Blood.Stop(true);
     Blood.Clear();
     _smoke.speed = 0;

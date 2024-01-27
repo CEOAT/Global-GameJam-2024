@@ -29,6 +29,9 @@ namespace GGJ2024
         [Header("Talking")] 
         [SerializeField] AntMessageBalloon messageBalloon;
         
+        [Header("VFX")] 
+        [SerializeField] LocalAntVFX antVFX;
+        
         public event Action<float> OnHealthChange;
         public event Action OnDie;
         public event Action OnClearFinish;
@@ -37,7 +40,13 @@ namespace GGJ2024
         AntMovementTarget movementTarget;
 
         Transform cachedTransform;
-        
+
+        public float DelayBeforeCleanUp
+        {
+            get => delayBeforeCleanUp;
+            set => delayBeforeCleanUp = value;
+        }
+
         public bool IsCannotChangeTarget { get; private set; }
 
         void Awake()
@@ -56,6 +65,7 @@ namespace GGJ2024
             currentState = AntState.Alive;
             isMoving = true;
             targetPosition = cachedTransform.position;
+            antVFX.ClearTemp();
         }
 
         public void DeInitialize()
@@ -107,6 +117,8 @@ namespace GGJ2024
             isMoving = false;
             KillStreakManager.Inst.AddKillCount();
             OnDie?.Invoke();
+            antVFX.ExplodeKill();
+            
             Clear();
         }
 

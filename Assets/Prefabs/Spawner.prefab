@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9f2782480a942d99bcddb7fa4adddaa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefab: {fileID: 2248218639446803560, guid: 8b5ee966ba7ce01468a6311fff3c26a6, type: 3}
+  prefab: {fileID: 2248218639446803560, guid: d12cac3aa0b686a479160183fe8188dd, type: 3}
   startUpCount: 0
   defaultCapacity: 10
   targetCount: 100
@@ -69,16 +69,6 @@ MonoBehaviour:
   shoutSentenceList:
   - No!!!!!!!!
   mourningDistance: 1
-  kamikazeStack:
-    items: []
-  freeRoamStack:
-    items: []
-  attackingStack:
-    items: []
-  busyStack:
-    items: []
-  funeralTargetStack:
-    items: []
 --- !u!1 &8338097134574160891
 GameObject:
   m_ObjectHideFlags: 0
