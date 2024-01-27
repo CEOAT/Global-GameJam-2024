@@ -1,12 +1,36 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class BaseKillStreak : MonoBehaviour
 {
-    public float duration;
-    public float damage;
+    public int maxAmmo;
+    public int currentAmmo;
+    public int damage;
     public float fireRate;
+    public float tempTime;
 
-    public abstract void Fire(Vector2 mousePosition);
+    public Action onOutOfAmmo; 
+
+    public void Initilize()
+    {
+        maxAmmo = currentAmmo;
+    }
+    public virtual void Fire(Vector2 mousePosition)
+    {
+        if(tempTime < fireRate)
+            return;
+        
+        tempTime = 0;
+        currentAmmo--;
+
+        if(currentAmmo <= 0)
+            onOutOfAmmo?.Invoke();
+    }
+
+    void FixedUpdate() 
+    {
+        tempTime += Time.deltaTime;
+    }
 }

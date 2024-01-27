@@ -75,6 +75,7 @@ namespace GGJ2024
             {
                 currentState = AntState.Dead;
                 isMoving = false;
+                KillStreakManager.Inst.AddKillCount();
                 OnDie?.Invoke();
                 Clear();
             }

@@ -9,15 +9,24 @@ public class KillStreakManager : MonoBehaviour
     public static KillStreakManager Inst;
 
     public int killCount = 0;
-    public List<KillStreakConfig> killStreakConfig = new List<KillStreakConfig>();
+    public List<BaseKillStreak> killStreakConfig = new List<BaseKillStreak>();
     public AnimationCurve killProgression;
     public int killMultiply;
     public int killStreakCount;
-    public int _target;
+    public bool isUseKillStreak = false;
+
+    public BaseKillStreak currentKillStreak;
 
     public void Awake()
     {
         Inst = this;
+    }
+
+    private void Start() {
+        foreach(var n in killStreakConfig)
+        {
+            n.onOutOfAmmo += OnOutOfAmmo;
+        }
     }
 
     public void AddKillCount()
@@ -32,19 +41,21 @@ public class KillStreakManager : MonoBehaviour
         int target = (int)killProgression.Evaluate(killStreakCount) * killMultiply;
         if(killCount >= target)
         {
+            currentKillStreak = killStreakConfig[UnityEngine.Random.Range(0,killStreakConfig.Count)];
+            isUseKillStreak = true;
             killCount = 0;
-            //can use killStreak
+            currentKillStreak.Initilize();
         }
     }
 
-    private void OnDrawGizmos() {
-        _target = (int)killProgression.Evaluate(killStreakCount) * killMultiply;
+    public void FireKillStreak(Vector2 mousePosition)
+    {
+        currentKillStreak.Fire(mousePosition);
     }
-}
 
-[Serializable]
-public class KillStreakConfig
-{
-    public int killCount;
-    public BaseKillStreak killStreak;
+    public void OnOutOfAmmo()
+    {
+        currentKillStreak = null;
+        isUseKillStreak = false;
+    }
 }

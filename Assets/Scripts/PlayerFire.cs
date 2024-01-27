@@ -9,8 +9,6 @@ public class PlayerFire : MonoBehaviour
     [SerializeField] float playerRange = 1;
     Collider2D[] detectAnts;
 
-    bool isUseKillStreak = false;
-    
     void Update()
     {
         Fire();
@@ -18,23 +16,24 @@ public class PlayerFire : MonoBehaviour
 
     void Fire()
     {
-        if(isUseKillStreak)
-            return;
-
         if (Input.GetMouseButtonDown(0))
         {
             Vector2 worldPoint = cam.ScreenToWorldPoint(Input.mousePosition);
+
+            if(KillStreakManager.Inst.isUseKillStreak)
+            {
+                KillStreakManager.Inst.FireKillStreak(worldPoint);
+                return;
+            }
+
             detectAnts = Physics2D.OverlapCircleAll(worldPoint, playerRange);
             foreach (Collider2D ant in detectAnts)
             {
                 if (ant.GetComponent<Ant>() != null)
                 {
                     ant.transform.gameObject.GetComponent<Ant>().TakeDamage(1f);
-                    KillStreakManager.Inst.AddKillCount();
                 }
             }
-
-
         }
     }
 }
