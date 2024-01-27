@@ -46,6 +46,7 @@ public class KillStreakManager : MonoBehaviour
             currentKillStreak = killStreakConfig[UnityEngine.Random.Range(0,killStreakConfig.Count)];
             isUseKillStreak = true;
             killCount = 0;
+            killStreakCount++;
             currentKillStreak.Initilize();
         }
     }
