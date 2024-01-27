@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace GGJ2024
 {
     public class AntSpawner : Spawner<Ant>
     {
+        public static AntSpawner Instance { get; private set; }
+        
         [SerializeField] Transform spawnPosition;
         [SerializeField] SwarmController swarmController;
 
@@ -16,35 +17,38 @@ namespace GGJ2024
         [SerializeField] float attackCountPercentage = 0.5f;
         [SerializeField] float angryAntSpeedMultiplier = 5f;
 
-        [Header("Funeral")] 
+        [Header("Funeral")]
+        
+        [Tooltip("Chance that dead ant will have a funeral")]
         [SerializeField] ChancePool funeralChance;
+        
+        [SerializeField]List<string> mourningSentencePrefixList = new List<string>();
+        [SerializeField]List<string> antNameList = new List<string>();
+        [SerializeField]List<string> shoutSentenceList = new List<string>();
+        
         [SerializeField] float mourningDistance = 1f;
+        
+        StackedList<Ant> kamikazeStack = new StackedList<Ant>();
+        StackedList<Ant> freeRoamStack = new StackedList<Ant>();
+        StackedList<Ant> attackingStack = new StackedList<Ant>();
+        StackedList<Ant> busyStack = new StackedList<Ant>();
+        StackedList<Ant> funeralTargetStack = new StackedList<Ant>();
 
-        [Header("Populations")]
-        [SerializeField] StackedList<Ant> kamikazeStack = new StackedList<Ant>();
-        [SerializeField] StackedList<Ant> freeRoamStack = new StackedList<Ant>();
-        [SerializeField] StackedList<Ant> attackingStack = new StackedList<Ant>();
-        [SerializeField] StackedList<Ant> busyStack = new StackedList<Ant>();
-        [SerializeField] StackedList<Ant> funeralTargetStack = new StackedList<Ant>();
-
-        Dictionary<Ant, Ant> OnGoingFuneralDice = new Dictionary<Ant, Ant>();
-
-        [ShowInInspector]
-        int TotalActiveCount
-        {
-            get
-            {
-                if (Pool == null)
-                    return 0;
-
-                return Pool.CountActive;
-            }
-        }
+        Dictionary<Ant, Ant> OnGoingFuneralDict = new Dictionary<Ant, Ant>();
+        
 
         float elapsedTime;
 
         int CurrentAttackingCount => attackingStack.Count + kamikazeStack.Count;
         int TargetAttackCount => Mathf.FloorToInt(attackCountPercentage * Pool.CountActive);
+
+        protected override void Awake()
+        {
+            if (Instance == null)
+                Instance = this;
+            
+            base.Awake();
+        }
 
         void LateUpdate()
         {
@@ -82,7 +86,7 @@ namespace GGJ2024
         void OrderToFuneral(Ant readyToMournAnt)
         {
             var deadAnt = funeralTargetStack.Pop();
-            OnGoingFuneralDice[deadAnt] = readyToMournAnt;
+            OnGoingFuneralDict[deadAnt] = readyToMournAnt;
 
             var funeralTarget = new FuneralPositionTarget(deadAnt, mourningDistance, readyToMournAnt.transform.position);
             funeralTarget.OnBecameInvalid += () =>
@@ -99,19 +103,27 @@ namespace GGJ2024
                 CompleteFuneral(deadAnt);
             };
 
-            readyToMournAnt.Say("No! Patrick!!!", 1f);
+            readyToMournAnt.Say(GetRandomString(mourningSentencePrefixList) + "\n" + GetRandomString(antNameList) + "!", 2f);
             readyToMournAnt.SetMovementTarget(funeralTarget, true);
             busyStack.Push(readyToMournAnt);
         }
 
+        string GetRandomString(List<string> list)
+        {
+            if (list.Count == 0)
+                return string.Empty;
+            
+            return list[Random.Range(0, list.Count)];
+        }
+
         void CompleteFuneral(Ant deadAnt)
         {
-            if (!OnGoingFuneralDice.TryGetValue(deadAnt, out var mourningAnt))
+            if (!OnGoingFuneralDict.TryGetValue(deadAnt, out var mourningAnt))
                 return;
             
             mourningAnt.DOShake(1f);
-            mourningAnt.Say("No!!!!!!", 1f);
-            OnGoingFuneralDice.Remove(deadAnt);
+            mourningAnt.Say(GetRandomString(shoutSentenceList), 1f);
+            OnGoingFuneralDict.Remove(deadAnt);
         }
 
         void OrderToFreeRoam(Ant retriedAnt)
@@ -142,14 +154,18 @@ namespace GGJ2024
             freeRoamStack.Remove(ant);
             attackingStack.Remove(ant);
             busyStack.Remove(ant);
-            
+            kamikazeStack.Remove(ant);
+        }
+
+        public void TryStartFuneral(Ant ant)
+        {
+            if (OnGoingFuneralDict.ContainsKey(ant))
+                return;
+
             //No funeral for kamikaze ant
             if (kamikazeStack.Contains(ant))
-            {
-                kamikazeStack.Remove(ant);
                 return;
-            }
-            
+
             if (!funeralChance.Get())
                 return;
 

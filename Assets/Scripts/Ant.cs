@@ -35,9 +35,16 @@ namespace GGJ2024
         bool isInitialized;
         Vector3 targetPosition;
         AntMovementTarget movementTarget;
+
+        Transform cachedTransform;
         
         public bool IsCannotChangeTarget { get; private set; }
-        
+
+        void Awake()
+        {
+            cachedTransform = transform;
+        }
+
         public void Initialize()
         {
             if (isInitialized)
@@ -48,7 +55,7 @@ namespace GGJ2024
             SetHealth(maxHealth);
             currentState = AntState.Alive;
             isMoving = true;
-            targetPosition = transform.position;
+            targetPosition = cachedTransform.position;
         }
 
         public void DeInitialize()
@@ -134,7 +141,7 @@ namespace GGJ2024
                 return;
             
             if (isCancelPendingTarget)
-                targetPosition = transform.position;
+                targetPosition = cachedTransform.position;
             
             movementTarget = target;
         }
@@ -143,7 +150,6 @@ namespace GGJ2024
         {
             currentSpeed = Random.Range(minSpeed, maxSpeed);
             targetPosition = pos;
-            RotateTowardsDirection();
         }
 
         void Update()
@@ -157,21 +163,21 @@ namespace GGJ2024
             if (!movementTarget.CheckIsValid())
                 return;
 
-            if (transform.position == targetPosition)
+            var currentPos = cachedTransform.position;
+            if (currentPos == targetPosition)
             {
                 currentSpeed = Random.Range(minSpeed, maxSpeed);
-                movementTarget.CheckIsReach(transform.position);
+                movementTarget.CheckIsReach(cachedTransform.position);
                 SetTargetPosition(movementTarget.GetPosition());
             }
             else
-                RotateTowardsDirection();
+            {
+                var vector = targetPosition - currentPos;
+                vector.z = 0;
+                cachedTransform.right = vector;
+            }
 
-            transform.position = Vector3.MoveTowards(transform.position, targetPosition,Time.deltaTime * currentSpeed * speedMultiplier);
-        }
-
-        void RotateTowardsDirection()
-        {
-            transform.right = targetPosition - transform.position;
+            cachedTransform.position = Vector3.MoveTowards(currentPos, targetPosition,Time.deltaTime * currentSpeed * speedMultiplier);
         }
 
         public void Say(string message, float duration)
@@ -187,12 +193,12 @@ namespace GGJ2024
         public void DOShake(float duration)
         {
             CancelShake();
-            transform.DOShakePosition(duration);
+            cachedTransform.DOShakePosition(duration);
         }
 
         void CancelShake()
         {
-            transform.DOKill(true);
+            cachedTransform.DOKill(true);
         }
 
         public void SetSpeedMultiplier(float value)

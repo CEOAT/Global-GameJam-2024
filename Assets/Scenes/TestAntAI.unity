@@ -313,47 +313,12 @@ PrefabInstance:
       value: Spawner
       objectReference: {fileID: 0}
     - target: {fileID: 6988565896109712552, guid: 3119412ed6a11404094d1fd442406f6e, type: 3}
-      propertyPath: maxSize
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 6988565896109712552, guid: 3119412ed6a11404094d1fd442406f6e, type: 3}
-      propertyPath: targetCount
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 6988565896109712552, guid: 3119412ed6a11404094d1fd442406f6e, type: 3}
       propertyPath: attackTarget
       value: 
       objectReference: {fileID: 1578961092}
-    - target: {fileID: 6988565896109712552, guid: 3119412ed6a11404094d1fd442406f6e, type: 3}
-      propertyPath: startUpCount
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 6988565896109712552, guid: 3119412ed6a11404094d1fd442406f6e, type: 3}
-      propertyPath: spawnPosition
-      value: 
-      objectReference: {fileID: 1477350851}
-    - target: {fileID: 6988565896109712552, guid: 3119412ed6a11404094d1fd442406f6e, type: 3}
-      propertyPath: defaultCapacity
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 6988565896109712552, guid: 3119412ed6a11404094d1fd442406f6e, type: 3}
-      propertyPath: swarmController
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 6988565896109712552, guid: 3119412ed6a11404094d1fd442406f6e, type: 3}
-      propertyPath: funeralChance.poolSize
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 6988565896109712552, guid: 3119412ed6a11404094d1fd442406f6e, type: 3}
-      propertyPath: funeralChance.chanceRate
-      value: 5
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 553686676939568134, guid: 3119412ed6a11404094d1fd442406f6e, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1477350851}
+    m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3119412ed6a11404094d1fd442406f6e, type: 3}
 --- !u!4 &678544788 stripped
@@ -463,6 +428,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1578961092}
   - component: {fileID: 1578961091}
+  - component: {fileID: 1578961094}
   m_Layer: 0
   m_Name: Capsule
   m_TagString: Untagged

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using GGJ2024;
 
@@ -61,7 +62,6 @@ public class PlayerFire : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             Vector2 worldPoint = cam.ScreenToWorldPoint(Input.mousePosition);
-
             if(KillStreakManager.Inst.isUseKillStreak)
             {
                 KillStreakManager.Inst.FireKillStreak(worldPoint);
@@ -70,18 +70,27 @@ public class PlayerFire : MonoBehaviour
 
             if(tempTime > 0)
                 return;
+            
+            tempTime = weaponList[weaponIndex].fireRate;
 
-            detectAnts = Physics2D.OverlapCircleAll(worldPoint, currentWeapon.weaponRange);
-            foreach (Collider2D ant in detectAnts)
+            detectAnts = Physics2D.OverlapCircleAll(worldPoint, playerRange);
+            var ants = detectAnts
+                .Select(hit => hit.GetComponent<Ant>())
+                .Where(a => a);
+
+            Ant oneDeadAnt = null;
+            foreach (var ant in ants)
             {
-                if (ant.GetComponent<Ant>() != null)
+                ant.TakeDamage(currentWeapon.weaponDamage);
+                if (ant.CurrentState != AntState.Alive)
                 {
-                    //ant.transform.gameObject.GetComponent<Ant>().TakeDamage(1f);
-                    ant.transform.gameObject.GetComponent<Ant>().TakeDamage(currentWeapon.weaponDamage);
+                    KillStreakManager.Inst.AddKillCount();
+                    oneDeadAnt = ant;
                 }
             }
 
-            tempTime = weaponList[weaponIndex].fireRate;
+            if (oneDeadAnt)
+                AntSpawner.Instance.TryStartFuneral(oneDeadAnt);
         }
     }
 
