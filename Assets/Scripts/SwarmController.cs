@@ -123,7 +123,7 @@ namespace GGJ2024
                     return;
 
                 var targetPos = transform.TransformPoint(vertexList[index] * spread) + GetRandomNoise();
-                movement.SetTargetPosition(targetPos);
+                movement.SetMovementTarget(new PositionTarget(targetPos));
                 index++;
             }
         }

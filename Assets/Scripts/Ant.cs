@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections;
-using Unity.Mathematics;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 namespace GGJ2024
@@ -14,8 +11,10 @@ namespace GGJ2024
         [SerializeField] bool isMoving;
         [SerializeField] float maxHealth = 1;
         [SerializeField] float currentHealth =1;
+
+        public AntState CurrentState => currentState;
         [SerializeField] AntState currentState;
-        
+
         [Header("Movement")]
         [SerializeField] float currentSpeed = 1f;
         [SerializeField] float minSpeed = 1f;
@@ -30,6 +29,7 @@ namespace GGJ2024
         public event Action OnClearFinish;
         bool isInitialized;
         Vector3 targetPosition;
+        AntMovementTarget movementTarget;
         
         public void Initialize()
         {
@@ -41,7 +41,7 @@ namespace GGJ2024
             SetHealth(maxHealth);
             currentState = AntState.Alive;
             isMoving = true;
-            SetNextposition();
+            targetPosition = transform.position;
         }
 
         public void DeInitialize()
@@ -82,10 +82,13 @@ namespace GGJ2024
         
         public void Clear()
         {
+            if (currentState == AntState.Clearing)
+                return;
+            
             if (currentState == AntState.Cleared)
                 return;
             
-            currentState = AntState.Cleared;
+            currentState = AntState.Clearing;
             StartCoroutine(ClearRoutine());
         }
 
@@ -99,19 +102,18 @@ namespace GGJ2024
                 decalParticle.Stop();
             
             OnClearFinish?.Invoke();
+            currentState = AntState.Cleared;
         }
 
-        public void SetTargetPosition(Vector3 pos)
+        public void SetMovementTarget(AntMovementTarget target)
+        {
+            movementTarget = target;
+        }
+
+        void SetTargetPosition(Vector3 pos)
         {
             currentSpeed = Random.Range(minSpeed, maxSpeed);
             targetPosition = pos;
-            RotateTowardsDirection();
-        }
-
-        public void SetNextposition()
-        {
-            currentSpeed = Random.Range(minSpeed, maxSpeed);
-            SetTargetPosition(GetRandomPositionInScreen());
             RotateTowardsDirection();
         }
 
@@ -119,22 +121,21 @@ namespace GGJ2024
         {
             if (!isMoving)
                 return;
-            
-            if(transform.position == targetPosition)
-                SetNextposition();
+
+            if (movementTarget == null)
+                return;
+
+            if (!movementTarget.IsValid())
+                return;
+
+            if (transform.position == targetPosition)
+            {
+                currentSpeed = Random.Range(minSpeed, maxSpeed);
+                SetTargetPosition(movementTarget.GetPosition());
+                RotateTowardsDirection();
+            }
 
             transform.position = Vector3.MoveTowards(transform.position, targetPosition,Time.deltaTime * currentSpeed);
-        }
-
-        Vector3 GetRandomPositionInScreen()
-        {
-            float screenWidth = Camera.main.orthographicSize * 2 * Screen.width / Screen.height;
-            float screenHeight = Camera.main.orthographicSize * 2;
-
-            float randomX = Random.Range(-screenWidth / 2, screenWidth / 2);
-            float randomY = Random.Range(-screenHeight / 2, screenHeight / 2);
-
-            return new Vector3(randomX, randomY, 0);
         }
 
         void RotateTowardsDirection()
@@ -145,7 +146,7 @@ namespace GGJ2024
 
     public enum AntState
     {
-        Alive, Dead, Cleared
+        Alive, Dead, Clearing, Cleared
     }
 }
 
