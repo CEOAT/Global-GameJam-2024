@@ -9,6 +9,8 @@ public class PlayerFire : MonoBehaviour
     public Vector3 screenPosition;
     public Vector3 worldPosition;
     [SerializeField] float playerRange = 1;
+
+    bool isUseKillStreak = false;
     
     void Update()
     {
@@ -17,6 +19,9 @@ public class PlayerFire : MonoBehaviour
 
     void Fire()
     {
+        if(isUseKillStreak)
+            return;
+
         if (Input.GetMouseButtonDown(0))
         {
             Vector2 worldPoint = cam.ScreenToWorldPoint(Input.mousePosition);
@@ -25,7 +30,7 @@ public class PlayerFire : MonoBehaviour
             {
                 if (hit.collider.tag == "Ant")
                 {
-                    hit.transform.gameObject.GetComponent<Ant>().DeInitialize();
+                    hit.transform.gameObject.GetComponent<Ant>().TakeDamage(1f);
                     print(hit.collider.gameObject.name);
                 }
             }
