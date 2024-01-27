@@ -5,7 +5,7 @@ using GGJ2024;
 
 public class PlayerFire : MonoBehaviour
 {
-    public Camera cam;
+    Camera cam => CameraHelper.mainCamera;
     [SerializeField] GameObject cursor;
     [SerializeField] float playerRange = 1;
     Collider2D[] detectAnts;

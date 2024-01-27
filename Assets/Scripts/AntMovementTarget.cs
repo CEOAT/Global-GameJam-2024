@@ -39,23 +39,10 @@ namespace GGJ2024
 
     public class FreeRoamPositionTarget : AntMovementTarget
     {
-        public static Camera mainCamera
-        {
-            get
-            {
-                if (unsafeMainCamera == null)
-                    unsafeMainCamera = Camera.main;
-
-                return unsafeMainCamera;
-            }
-        }
-
-        static Camera unsafeMainCamera;
-
         public override Vector3 GetPosition()
         {
-            float screenWidth = mainCamera.orthographicSize * 2 * Screen.width / Screen.height;
-            float screenHeight = mainCamera.orthographicSize * 2;
+            float screenWidth = CameraHelper.mainCamera.orthographicSize * 2 * Screen.width / Screen.height;
+            float screenHeight = CameraHelper.mainCamera.orthographicSize * 2;
             float randomX = Random.Range(-screenWidth / 2, screenWidth / 2);
             float randomY = Random.Range(-screenHeight / 2, screenHeight / 2);
             return new Vector3(randomX, randomY, 0);
