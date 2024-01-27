@@ -27,27 +27,15 @@ namespace GGJ2024
         [SerializeField]List<string> shoutSentenceList = new List<string>();
         
         [SerializeField] float mourningDistance = 1f;
-
-        [Header("Populations")]
-        [SerializeField] StackedList<Ant> kamikazeStack = new StackedList<Ant>();
-        [SerializeField] StackedList<Ant> freeRoamStack = new StackedList<Ant>();
-        [SerializeField] StackedList<Ant> attackingStack = new StackedList<Ant>();
-        [SerializeField] StackedList<Ant> busyStack = new StackedList<Ant>();
-        [SerializeField] StackedList<Ant> funeralTargetStack = new StackedList<Ant>();
+        
+        StackedList<Ant> kamikazeStack = new StackedList<Ant>();
+        StackedList<Ant> freeRoamStack = new StackedList<Ant>();
+        StackedList<Ant> attackingStack = new StackedList<Ant>();
+        StackedList<Ant> busyStack = new StackedList<Ant>();
+        StackedList<Ant> funeralTargetStack = new StackedList<Ant>();
 
         Dictionary<Ant, Ant> OnGoingFuneralDict = new Dictionary<Ant, Ant>();
-
-        [ShowInInspector]
-        int TotalActiveCount
-        {
-            get
-            {
-                if (Pool == null)
-                    return 0;
-
-                return Pool.CountActive;
-            }
-        }
+        
 
         float elapsedTime;
 
