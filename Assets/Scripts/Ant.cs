@@ -1,21 +1,33 @@
 ﻿using System;
+using System.Collections;
 using Unity.Mathematics;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 namespace GGJ2024
 {
     public class Ant : MonoBehaviour
     {
+        [Header("Health")] 
+        [SerializeField] bool isMoving;
         [SerializeField] float maxHealth = 1;
         [SerializeField] float currentHealth =1;
+        [SerializeField] AntState currentState;
+        
+        [Header("Movement")]
         [SerializeField] float currentSpeed = 1f;
         [SerializeField] float minSpeed = 1f;
         [SerializeField] float maxSpeed = 5f;
 
+        [Header("Clean Up")] 
+        [SerializeField] float delayBeforeCleanUp = 1f;
+        [SerializeField] ParticleSystem decalParticle;
+
         public event Action<float> OnHealthChange;
         public event Action OnDie;
+        public event Action OnClearFinish;
         bool isInitialized;
         Vector3 targetPosition;
         
@@ -26,7 +38,9 @@ namespace GGJ2024
 
             isInitialized = true;
             gameObject.SetActive(true);
-            currentHealth = maxHealth;
+            SetHealth(maxHealth);
+            currentState = AntState.Alive;
+            isMoving = true;
             SetNextposition();
         }
 
@@ -34,6 +48,7 @@ namespace GGJ2024
         {
             isInitialized = false;
             OnHealthChange = null;
+            OnClearFinish = null;
             OnDie = null;
             gameObject.SetActive(false);
         }
@@ -51,10 +66,39 @@ namespace GGJ2024
 
         void SetHealth(float value)
         {
+            if (currentState != AntState.Alive)
+                return;
+
             currentHealth = Mathf.Clamp(value, 0, maxHealth);
             OnHealthChange?.Invoke(currentHealth);
             if (currentHealth <= 0)
+            {
+                currentState = AntState.Dead;
+                isMoving = false;
                 OnDie?.Invoke();
+                Clear();
+            }
+        }
+        
+        public void Clear()
+        {
+            if (currentState == AntState.Cleared)
+                return;
+            
+            currentState = AntState.Cleared;
+            StartCoroutine(ClearRoutine());
+        }
+
+        IEnumerator ClearRoutine()
+        {
+            if (decalParticle)
+                decalParticle.Play();
+            
+            yield return new WaitForSeconds(delayBeforeCleanUp);
+            if (decalParticle)
+                decalParticle.Stop();
+            
+            OnClearFinish?.Invoke();
         }
 
         public void SetTargetPosition(Vector3 pos)
@@ -73,6 +117,9 @@ namespace GGJ2024
 
         void Update()
         {
+            if (!isMoving)
+                return;
+            
             if(transform.position == targetPosition)
                 SetNextposition();
 
@@ -94,6 +141,11 @@ namespace GGJ2024
         {
             transform.right = targetPosition - transform.position;
         }
+    }
+
+    public enum AntState
+    {
+        Alive, Dead, Cleared
     }
 }
 

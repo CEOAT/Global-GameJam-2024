@@ -31,6 +31,7 @@ public class PlayerFire : MonoBehaviour
                 if (hit.collider.tag == "Ant")
                 {
                     hit.transform.gameObject.GetComponent<Ant>().TakeDamage(1f);
+                    KillStreakManager.Inst.AddKillCount();
                     print(hit.collider.gameObject.name);
                 }
             }
