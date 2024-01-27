@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Sirenix.OdinInspector;
 
 public class Nuke : BaseKillStreak
 {
@@ -30,7 +31,8 @@ public class Nuke : BaseKillStreak
         nukeTransform = Instantiate(nukePrefab, nukePosition, nukePrefab.transform.rotation).transform;
     }
 
-    private void Start()
+    [Button("Test Nuke")]
+    private void TestNuke()
     {
         //CreateNuke(new Vector2(0,0));
     }

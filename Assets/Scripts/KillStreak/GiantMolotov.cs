@@ -30,7 +30,7 @@ public class GiantMolotov : BaseKillStreak
             {
                 if (ant.GetComponent<Ant>() != null)
                 {
-                    ant.transform.gameObject.GetComponent<Ant>().TakeDamage(damage);
+                    ant.transform.gameObject.GetComponent<Ant>().TakeDamage(damage,false);
                 }
             }
         }

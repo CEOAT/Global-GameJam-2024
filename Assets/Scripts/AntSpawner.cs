@@ -11,7 +11,7 @@ namespace GGJ2024
         [SerializeField] Transform spawnPosition;
         
         [Header("Attacking")] 
-        [SerializeField] Transform attackTarget;
+        [SerializeField] AntTarget attackTarget;
         [Range(0, 1f)] 
         [SerializeField] float attackCountPercentage = 0.5f;
         [SerializeField] float angryAntSpeedMultiplier = 5f;
@@ -116,14 +116,14 @@ namespace GGJ2024
 
         void OrderToAttack(Ant readyToAttackAnt)
         {
-            readyToAttackAnt.SetMovementTarget(new TransformTarget(attackTarget), true);
+            readyToAttackAnt.SetMovementTarget(new TransformTarget(attackTarget.transform), true);
             attackingStack.Push(readyToAttackAnt);
         }
         
         void OrderToKamikaze(Ant readyToAttackAnt)
         {
             readyToAttackAnt.SetSpeedMultiplier(angryAntSpeedMultiplier);
-            readyToAttackAnt.SetMovementTarget(new TransformTarget(attackTarget), true);
+            readyToAttackAnt.SetMovementTarget(new TransformTarget(attackTarget.transform), true);
             kamikazeStack.Push(readyToAttackAnt);
         }
         

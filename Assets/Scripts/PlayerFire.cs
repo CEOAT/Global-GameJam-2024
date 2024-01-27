@@ -59,6 +59,9 @@ public class PlayerFire : MonoBehaviour
 
     void Fire()
     {
+        if(GameManager.Inst.isGameOver)
+            return;
+            
         if (Input.GetMouseButtonDown(0))
         {
             Vector2 worldPoint = cam.ScreenToWorldPoint(Input.mousePosition);
