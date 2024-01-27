@@ -12,11 +12,11 @@ public class DamageTrigger : MonoBehaviour
         damage = damageWeapon;
     }
 
-    private void OnTriggerEnter(Collider other) 
+    private void OnTriggerEnter2D(Collider2D other) 
     {
         if(other.tag == "Ant" && other.isTrigger)
         {
-            GetComponent<Ant>().TakeDamage(damage);
+            other.GetComponent<Ant>().TakeDamage(damage);
         }
     }
 }

@@ -31,6 +31,9 @@ namespace GGJ2024
         
         [Header("VFX")] 
         [SerializeField] LocalAntVFX antVFX;
+
+        [Header("Damage")]
+        public int damage = 1;
         
         public event Action<float> OnHealthChange;
         public event Action OnDie;

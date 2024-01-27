@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   duration: 0
-  damage: 0
+  damage: 500
   fireRate: 0
   nukePrefab: {fileID: 5736557002661570064, guid: 35a76d2d3de25cb45b84e820b77f688b, type: 3}
   nukeScaleDownSpeed: 0.05
