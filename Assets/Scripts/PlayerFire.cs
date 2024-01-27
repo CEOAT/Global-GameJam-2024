@@ -29,10 +29,12 @@ public class PlayerFire : MonoBehaviour
         {
             RaycastHit hit;
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out hit, 100))
+            if (Physics.Raycast(ray, out hit))
             {
-                Debug.Log(hit.transform.name);
-                Debug.Log("hit");
+                if (hit.collider.tag == "Ant")
+                {
+                    
+                }
             }
         }
         //screenPosition = Input.mousePosition;
