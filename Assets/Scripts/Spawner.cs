@@ -14,6 +14,7 @@ namespace GGJ2024
         [SerializeField] float minSpawnDelay = 0;
         [SerializeField] float maxSpawnDelay = 1f;
 
+
         float currentDelayLeft;
         ObjectPool<T> pool;
         
