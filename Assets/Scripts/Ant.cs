@@ -50,6 +50,7 @@ namespace GGJ2024
             OnHealthChange = null;
             OnClearFinish = null;
             OnDie = null;
+            movementTarget = null;
             gameObject.SetActive(false);
         }
 

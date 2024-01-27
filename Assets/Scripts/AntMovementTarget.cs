@@ -37,7 +37,7 @@ namespace GGJ2024
         }
     }
 
-    public class RandomPositionTarget : AntMovementTarget
+    public class FreeRoamPositionTarget : AntMovementTarget
     {
         public static Camera mainCamera
         {
@@ -66,7 +66,7 @@ namespace GGJ2024
             return true;
         }
 
-        public RandomPositionTarget()
+        public FreeRoamPositionTarget()
         {
         }
     }

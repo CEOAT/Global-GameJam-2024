@@ -16,6 +16,8 @@ namespace GGJ2024
 
 
         float currentDelayLeft;
+
+        public ObjectPool<T> Pool => pool;
         ObjectPool<T> pool;
         
         void Awake()
