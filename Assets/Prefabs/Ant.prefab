@@ -98,11 +98,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc69114ccfe746a98b40d2f4e4777c65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isMoving: 0
   maxHealth: 1
   currentHealth: 1
+  currentState: 0
   currentSpeed: 1
   minSpeed: 2
   maxSpeed: 4
+  delayBeforeCleanUp: 1
+  decalParticle: {fileID: 0}
 --- !u!61 &6609500012099126192
 BoxCollider2D:
   m_ObjectHideFlags: 0
