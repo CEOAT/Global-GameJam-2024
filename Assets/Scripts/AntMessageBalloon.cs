@@ -31,5 +31,11 @@ namespace GGJ2024
             seq.Append(canvasGroup.DOFade(0f, fadeDuration));
             seq.SetTarget(canvasGroup);
         }
+
+        public void Hide()
+        {
+            canvasGroup.DOKill();
+            canvasGroup.alpha = 0;
+        }
     }
 }

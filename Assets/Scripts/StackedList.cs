@@ -42,6 +42,11 @@ namespace GGJ2024
         }
 
         public int Count => items.Count;
+
+        public bool Contains(T ant)
+        {
+            return items.Contains(ant);
+        }
     }
 
     [Serializable]

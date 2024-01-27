@@ -103,10 +103,11 @@ MonoBehaviour:
   maxHealth: 1
   currentHealth: 1
   currentState: 0
+  speedMultiplier: 1
   currentSpeed: 1
   minSpeed: 2
   maxSpeed: 4
-  delayBeforeCleanUp: 5
+  delayBeforeCleanUp: 1
   decalParticle: {fileID: 0}
   messageBalloon: {fileID: 8046623801848540965}
 --- !u!61 &6609500012099126192

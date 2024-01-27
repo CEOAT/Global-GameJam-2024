@@ -19,9 +19,12 @@ namespace GGJ2024
             return true;
         }
 
-        public void NotifyReach()
+        public void CheckIsReach(Vector3 position)
         {
             if (IsReachedOnce)
+                return;
+            
+            if (position != GetPosition())
                 return;
             
             IsReachedOnce = true;

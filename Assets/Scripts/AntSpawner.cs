@@ -1,4 +1,5 @@
-﻿using Sirenix.OdinInspector;
+﻿using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -9,18 +10,24 @@ namespace GGJ2024
         [SerializeField] Transform spawnPosition;
         [SerializeField] SwarmController swarmController;
 
-        [Header("Attacking")] [SerializeField] Transform attackTarget;
-        [Range(0, 1f)] [SerializeField] float attackCountPercentage = 0.5f;
+        [Header("Attacking")] 
+        [SerializeField] Transform attackTarget;
+        [Range(0, 1f)] 
+        [SerializeField] float attackCountPercentage = 0.5f;
+        [SerializeField] float angryAntSpeedMultiplier = 5f;
 
         [Header("Funeral")] 
         [SerializeField] ChancePool funeralChance;
         [SerializeField] float mourningDistance = 1f;
 
-        [Header("Populations")] 
+        [Header("Populations")]
+        [SerializeField] StackedList<Ant> kamikazeStack = new StackedList<Ant>();
         [SerializeField] StackedList<Ant> freeRoamStack = new StackedList<Ant>();
         [SerializeField] StackedList<Ant> attackingStack = new StackedList<Ant>();
         [SerializeField] StackedList<Ant> busyStack = new StackedList<Ant>();
         [SerializeField] StackedList<Ant> funeralTargetStack = new StackedList<Ant>();
+
+        Dictionary<Ant, Ant> OnGoingFuneralDice = new Dictionary<Ant, Ant>();
 
         [ShowInInspector]
         int TotalActiveCount
@@ -36,7 +43,7 @@ namespace GGJ2024
 
         float elapsedTime;
 
-        int CurrentAttackingCount => attackingStack.Count;
+        int CurrentAttackingCount => attackingStack.Count + kamikazeStack.Count;
         int TargetAttackCount => Mathf.FloorToInt(attackCountPercentage * Pool.CountActive);
 
         void LateUpdate()
@@ -65,18 +72,46 @@ namespace GGJ2024
             attackingStack.Push(readyToAttackAnt);
         }
         
+        void OrderToKamikaze(Ant readyToAttackAnt)
+        {
+            readyToAttackAnt.SetSpeedMultiplier(angryAntSpeedMultiplier);
+            readyToAttackAnt.SetMovementTarget(new TransformTarget(attackTarget), true);
+            kamikazeStack.Push(readyToAttackAnt);
+        }
+        
         void OrderToFuneral(Ant readyToMournAnt)
         {
-            var funeralTarget = new FuneralPositionTarget(funeralTargetStack.Pop(), mourningDistance, readyToMournAnt.transform.position);
+            var deadAnt = funeralTargetStack.Pop();
+            OnGoingFuneralDice[deadAnt] = readyToMournAnt;
+
+            var funeralTarget = new FuneralPositionTarget(deadAnt, mourningDistance, readyToMournAnt.transform.position);
             funeralTarget.OnBecameInvalid += () =>
             {
+                CompleteFuneral(deadAnt);
                 busyStack.Remove(readyToMournAnt);
-                OrderToFreeRoam(readyToMournAnt);
+                    
+                //Turn mourning ant into angry ant that will keep attacking
+                OrderToKamikaze(readyToMournAnt);
+            };
+            
+            funeralTarget.OnReach += ()=>
+            {
+                CompleteFuneral(deadAnt);
             };
 
             readyToMournAnt.Say("No! Patrick!!!", 1f);
             readyToMournAnt.SetMovementTarget(funeralTarget, true);
             busyStack.Push(readyToMournAnt);
+        }
+
+        void CompleteFuneral(Ant deadAnt)
+        {
+            if (!OnGoingFuneralDice.TryGetValue(deadAnt, out var mourningAnt))
+                return;
+            
+            mourningAnt.DOShake(1f);
+            mourningAnt.Say("No!!!!!!", 1f);
+            OnGoingFuneralDice.Remove(deadAnt);
         }
 
         void OrderToFreeRoam(Ant retriedAnt)
@@ -107,6 +142,14 @@ namespace GGJ2024
             freeRoamStack.Remove(ant);
             attackingStack.Remove(ant);
             busyStack.Remove(ant);
+            
+            //No funeral for kamikaze ant
+            if (kamikazeStack.Contains(ant))
+            {
+                kamikazeStack.Remove(ant);
+                return;
+            }
+            
             if (!funeralChance.Get())
                 return;
 
