@@ -13,6 +13,8 @@ public class Nuke : BaseKillStreak
     [SerializeField] private GameObject nukeDamageTriggerPrefab;
     private GameObject nukeDamageTriggerObject;
 
+    [SerializeField] private GameObject nukeEffectPrefab;
+
     [SerializeField] private GameObject whiteScreenPrefab;
     private SpriteRenderer whiteScreenSprite;
     [SerializeField] private float fadeInSpeed = 1f;
@@ -70,6 +72,7 @@ public class Nuke : BaseKillStreak
     {
         if(nukeTransform != null && nukeTransform.localScale.x < nukeMinimumSize)
         {
+            Instantiate(nukeEffectPrefab, nukeTransform.position, nukeTransform.rotation);
             Destroy(nukeTransform.gameObject);
             nukeTransform = null;
             StartCoroutine(DetonationSequence());

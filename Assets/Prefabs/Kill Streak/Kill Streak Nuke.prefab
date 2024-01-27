@@ -51,6 +51,7 @@ MonoBehaviour:
   nukeScaleDownSpeed: 0.05
   nukeMinimumSize: 0.1
   nukeDamageTriggerPrefab: {fileID: 468603260636194973, guid: c9e6b744514cc66498399d7d22ba47f5, type: 3}
+  nukeEffectPrefab: {fileID: 3794534298406079253, guid: 1e2f5763c91e2864a89691694eaee58b, type: 3}
   whiteScreenPrefab: {fileID: 4042069114606099362, guid: 31f6e8df1e4743542a6287d34051c1d2, type: 3}
   fadeInSpeed: 1
   fadeOutSpeed: 1
