@@ -3,8 +3,7 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags:
-  - Ant
+  tags: []
   layers:
   - Default
   - TransparentFX
@@ -39,6 +38,9 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: BG
+    uniqueID: 1122806657
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
