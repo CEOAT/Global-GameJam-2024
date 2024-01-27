@@ -27,10 +27,10 @@ public class PlayerFire : MonoBehaviour
             detectAnts = Physics2D.OverlapCircleAll(worldPoint, playerRange);
             foreach (Collider2D ant in detectAnts)
             {
-                print(ant.gameObject.name);
                 if (ant.GetComponent<Ant>() != null)
                 {
-                    ant.gameObject.GetComponent<Ant>().TakeDamage(1f);
+                    ant.transform.gameObject.GetComponent<Ant>().TakeDamage(1f);
+                    KillStreakManager.Inst.AddKillCount();
                 }
             }
 
