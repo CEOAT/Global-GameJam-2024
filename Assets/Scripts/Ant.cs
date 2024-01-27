@@ -94,12 +94,12 @@ namespace GGJ2024
             SetHealth(0);
         }
 
-        public void TakeDamage(float damage)
+        public void TakeDamage(float damage,bool addKillCount = true)
         {
-            SetHealth(currentHealth - damage);
+            SetHealth(currentHealth - damage,addKillCount);
         }
 
-        void SetHealth(float value)
+        void SetHealth(float value,bool addKillCount = true)
         {
             if (currentState != AntState.Alive)
                 return;
@@ -108,17 +108,18 @@ namespace GGJ2024
             OnHealthChange?.Invoke(currentHealth);
             if (currentHealth <= 0)
             {
-                Die();
+                Die(addKillCount);
             }
         }
 
-        void Die()
+        void Die(bool addKillCount)
         {
             HideBalloon();
             CancelShake();
             currentState = AntState.Dead;
             isMoving = false;
-            KillStreakManager.Inst.AddKillCount();
+            if(addKillCount)
+                KillStreakManager.Inst.AddKillCount();
             OnDie?.Invoke();
             antVFX.ExplodeKill();
             
