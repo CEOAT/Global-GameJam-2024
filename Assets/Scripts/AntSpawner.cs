@@ -80,7 +80,14 @@ namespace GGJ2024
                 return;
 
             var antList = new List<Ant>();
-            antList.AddRange(freeRoamStack.PopAll());
+            for (int i = 0; i < amount; i++)
+            {
+                if (freeRoamStack.TryPop(out var ant))
+                    antList.Add(ant);
+                else
+                    break;
+            }
+            
             var lackingAmount = amount - antList.Count;
             if (lackingAmount > 0)
             {

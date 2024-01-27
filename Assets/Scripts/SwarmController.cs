@@ -29,7 +29,8 @@ namespace GGJ2024
                 RefreshVertices();
             }
         }
-        
+
+        [SerializeField] bool isShowSprite;
         [SerializeField] float fadeInDelay = 2f;
         [SerializeField] float fadeInDuration = 1f;
         [SerializeField] float stayDuration = 1f;
@@ -152,13 +153,17 @@ namespace GGJ2024
                 return;
             
             movementList.AddRange(ant);
-            spriteRenderer.DOKill();
-            var seq = DOTween.Sequence();
-            seq.AppendInterval(fadeInDelay);
-            seq.Append(spriteRenderer.DOFade(1f, fadeInDuration));
-            seq.AppendInterval(stayDuration);
-            seq.Append(spriteRenderer.DOFade(0f, fadeOutDuration));
-            seq.SetTarget(spriteRenderer);
+            if (isShowSprite)
+            {
+                spriteRenderer.DOKill();
+                var seq = DOTween.Sequence();
+                seq.AppendInterval(fadeInDelay);
+                seq.Append(spriteRenderer.DOFade(1f, fadeInDuration));
+                seq.AppendInterval(stayDuration);
+                seq.Append(spriteRenderer.DOFade(0f, fadeOutDuration));
+                seq.SetTarget(spriteRenderer);
+            }
+           
         }
 
         public void Unregister(Ant ant)
