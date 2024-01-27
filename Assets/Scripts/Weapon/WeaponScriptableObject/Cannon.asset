@@ -15,4 +15,4 @@ MonoBehaviour:
   weaponDamage: 5
   weaponRange: 5
   fireRate: 10
-  cursorSprite: {fileID: 21300000, guid: 572e27a8585b05946bc652f135f68879, type: 3}
+  cursorSprite: {fileID: 21300000, guid: d95de0c3bdf3e5f44886398e6e43f17f, type: 3}
