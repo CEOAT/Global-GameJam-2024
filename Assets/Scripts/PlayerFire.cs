@@ -13,12 +13,15 @@ public class PlayerFire : MonoBehaviour
     [SerializeField] int weaponIndex = 0;
     [SerializeField] List<WeaponScriptableObject> weaponList;
     private bool isAttackReady = true;
+    float tempTime;
 
     Collider2D[] detectAnts;
    
     
     void Update()
     {
+        tempTime += Time.deltaTime;
+
         SwitchWeapon();
         CursorMove();
         Fire();
@@ -57,8 +60,6 @@ public class PlayerFire : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            print("Fire");
-            StartCoroutine(CountAttackCooldown());
             Vector2 worldPoint = cam.ScreenToWorldPoint(Input.mousePosition);
 
             if(KillStreakManager.Inst.isUseKillStreak)
@@ -67,29 +68,23 @@ public class PlayerFire : MonoBehaviour
                 return;
             }
 
-            if(isAttackReady)
+            if(tempTime < weaponList[weaponIndex].fireRate)
+                return;
+
+            //RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero, playerRange);
+            RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero, currentWeapon.weaponRange);
+            detectAnts = Physics2D.OverlapCircleAll(worldPoint, currentWeapon.weaponRange);
+            foreach (Collider2D ant in detectAnts)
             {
-                //RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero, playerRange);
-                RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero, currentWeapon.weaponRange);
-                detectAnts = Physics2D.OverlapCircleAll(worldPoint, currentWeapon.weaponRange);
-                foreach (Collider2D ant in detectAnts)
+                if (ant.GetComponent<Ant>() != null)
                 {
-                    if (ant.GetComponent<Ant>() != null)
-                    {
-                        //ant.transform.gameObject.GetComponent<Ant>().TakeDamage(1f);
-                        ant.transform.gameObject.GetComponent<Ant>().TakeDamage(currentWeapon.weaponDamage);
-                    }
+                    //ant.transform.gameObject.GetComponent<Ant>().TakeDamage(1f);
+                    ant.transform.gameObject.GetComponent<Ant>().TakeDamage(currentWeapon.weaponDamage);
                 }
             }
+
+            tempTime = 0;
         }
-    }
-    
-    private IEnumerator CountAttackCooldown()
-    {
-        isAttackReady = false;
-        yield return new WaitForSeconds(weaponList[weaponIndex].fireRate);
-        isAttackReady = true;
-        print("Ready");
     }
 
     void OnDrawGizmosSelected()

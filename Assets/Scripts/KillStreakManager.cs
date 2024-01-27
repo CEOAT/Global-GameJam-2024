@@ -22,13 +22,6 @@ public class KillStreakManager : MonoBehaviour
         Inst = this;
     }
 
-    private void Start() {
-        foreach(var n in killStreakConfig)
-        {
-            n.onOutOfAmmo += OnOutOfAmmo;
-        }
-    }
-
     public void AddKillCount()
     {
         killCount++;

@@ -26,10 +26,10 @@ public abstract class BaseKillStreak : MonoBehaviour
         currentAmmo--;
 
         if(currentAmmo <= 0)
-            onOutOfAmmo?.Invoke();
+            KillStreakManager.Inst.OnOutOfAmmo();
     }
 
-    void FixedUpdate() 
+    void Update() 
     {
         tempTime += Time.deltaTime;
     }
