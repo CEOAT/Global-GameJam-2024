@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &3564352455786577520
+--- !u!1 &1933713273700620681
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,51 +8,41 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3728866463260866062}
-  - component: {fileID: 3784172048786402355}
+  - component: {fileID: 6696486544770889250}
+  - component: {fileID: 4994491909408364700}
   m_Layer: 0
-  m_Name: Kill Streak Nuke
+  m_Name: GameManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &3728866463260866062
+--- !u!4 &6696486544770889250
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3564352455786577520}
+  m_GameObject: {fileID: 1933713273700620681}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -1.0750284, y: 1.2877147, z: 0.05839536}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3784172048786402355
+--- !u!114 &4994491909408364700
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3564352455786577520}
+  m_GameObject: {fileID: 1933713273700620681}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 56ec5d962ea6f4647ba6c6005b1a5b9d, type: 3}
+  m_Script: {fileID: 11500000, guid: d8cd0034fd408924aa4ec56f69407544, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  duration: 0
-  damage: 500
-  fireRate: 0
-  nukePrefab: {fileID: 5736557002661570064, guid: 35a76d2d3de25cb45b84e820b77f688b, type: 3}
-  nukeScaleDownSpeed: 0.05
-  nukeMinimumSize: 0.1
-  nukeDamageTriggerPrefab: {fileID: 468603260636194973, guid: c9e6b744514cc66498399d7d22ba47f5, type: 3}
-  whiteScreenPrefab: {fileID: 4042069114606099362, guid: 31f6e8df1e4743542a6287d34051c1d2, type: 3}
-  fadeInSpeed: 1
-  fadeOutSpeed: 1
-  fadeInWaitTime: 3
-  fadeOutWaitTime: 3
+  UIGameover: {fileID: 0}
+  isGameOver: 0

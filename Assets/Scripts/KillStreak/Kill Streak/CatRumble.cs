@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Sirenix.OdinInspector;
 
 public class CatRumble : BaseKillStreak
 {
@@ -15,6 +16,12 @@ public class CatRumble : BaseKillStreak
     {
         Gizmos.color = Color.green;
         Gizmos.DrawLine(startPosition, endPosition);
+    }
+
+    [Button("Test Rumble")]
+    private void TestRumble()
+    {
+        CreateCatTransform();
     }
 
     public override void OnFire(Vector2 mousePosition)
