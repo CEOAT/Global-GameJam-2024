@@ -50,9 +50,9 @@ MonoBehaviour:
   fadeInDuration: 1
   stayDuration: 0.5
   fadeOutDuration: 1
-  fillerSize: 0.004
+  fillerSize: 0.002
   spacing: 0.2
-  spread: 1
+  spread: 1.12
   randomMagnitude: {x: 0.05, y: 0.05}
 --- !u!212 &1628368053382878052
 SpriteRenderer:
