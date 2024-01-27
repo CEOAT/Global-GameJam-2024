@@ -24,6 +24,9 @@ namespace GGJ2024
         [SerializeField] float delayBeforeCleanUp = 1f;
         [SerializeField] ParticleSystem decalParticle;
 
+        [Header("Talking")] 
+        [SerializeField] AntMessageBalloon messageBalloon;
+        
         public event Action<float> OnHealthChange;
         public event Action OnDie;
         public event Action OnClearFinish;
@@ -106,8 +109,11 @@ namespace GGJ2024
             currentState = AntState.Cleared;
         }
 
-        public void SetMovementTarget(AntMovementTarget target)
+        public void SetMovementTarget(AntMovementTarget target, bool isCancelPendingTarget)
         {
+            if (isCancelPendingTarget)
+                targetPosition = transform.position;
+            
             movementTarget = target;
         }
 
@@ -126,15 +132,17 @@ namespace GGJ2024
             if (movementTarget == null)
                 return;
 
-            if (!movementTarget.IsValid())
+            if (!movementTarget.CheckIsValid())
                 return;
 
             if (transform.position == targetPosition)
             {
                 currentSpeed = Random.Range(minSpeed, maxSpeed);
+                movementTarget.NotifyReach();
                 SetTargetPosition(movementTarget.GetPosition());
-                RotateTowardsDirection();
             }
+            else
+                RotateTowardsDirection();
 
             transform.position = Vector3.MoveTowards(transform.position, targetPosition,Time.deltaTime * currentSpeed);
         }
@@ -142,6 +150,11 @@ namespace GGJ2024
         void RotateTowardsDirection()
         {
             transform.right = targetPosition - transform.position;
+        }
+
+        public void Say(string message, float duration)
+        {
+            messageBalloon.Play(message, duration);
         }
     }
 

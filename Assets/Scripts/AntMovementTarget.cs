@@ -1,17 +1,43 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace GGJ2024
 {
     public abstract class AntMovementTarget
     {
         public abstract Vector3 GetPosition();
-        public abstract bool IsValid();
+
+        public bool CheckIsValid()
+        {
+            if (!IsValid())
+            {
+                OnBecameInvalid?.Invoke();
+                return false;
+            }
+
+            return true;
+        }
+
+        public void NotifyReach()
+        {
+            if (IsReachedOnce)
+                return;
+            
+            IsReachedOnce = true;
+            OnReach?.Invoke();
+        }
+        
+        protected abstract bool IsValid();
+        public event Action OnBecameInvalid;
+        public event Action OnReach;
+        public bool IsReachedOnce;
     }
 
     public class TransformTarget : AntMovementTarget
     {
         public override Vector3 GetPosition() => transform.position;
-        public override bool IsValid() => transform;
+        protected override bool IsValid() => transform;
         public Transform transform;
 
         public TransformTarget(Transform transform)
@@ -24,7 +50,7 @@ namespace GGJ2024
     {
         public override Vector3 GetPosition() => position;
 
-        public override bool IsValid()
+        protected override bool IsValid()
         {
             return true;
         }
@@ -48,7 +74,7 @@ namespace GGJ2024
             return new Vector3(randomX, randomY, 0);
         }
 
-        public override bool IsValid()
+        protected override bool IsValid()
         {
             return true;
         }
@@ -61,12 +87,21 @@ namespace GGJ2024
     public class FuneralPositionTarget : AntMovementTarget
     {
         public Ant deadAnt;
+        public float distanceFromBody;
+        public Vector3 direction;
         public override Vector3 GetPosition()
         {
-            return deadAnt.transform.position;
+            return deadAnt.transform.position - (direction * distanceFromBody);
         }
 
-        public override bool IsValid()
+        public FuneralPositionTarget(Ant deadAnt, float distanceFromBody, Vector3 startPosition)
+        {
+            this.deadAnt = deadAnt;
+            this.distanceFromBody = distanceFromBody;
+            direction = (deadAnt.transform.position - startPosition).normalized;
+        }
+
+        protected override bool IsValid()
         {
             return deadAnt.CurrentState == AntState.Clearing;
         }
