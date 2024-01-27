@@ -42,6 +42,12 @@ TagManager:
   - name: BG
     uniqueID: 1122806657
     locked: 0
+  - name: DecalGround
+    uniqueID: 4093116059
+    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Shadows
+    uniqueID: 343861825
     locked: 0
