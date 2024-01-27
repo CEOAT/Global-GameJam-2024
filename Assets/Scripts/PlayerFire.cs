@@ -1,44 +1,31 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using GGJ2024;
 
 public class PlayerFire : MonoBehaviour
 {
     public Camera cam;
     public Vector3 screenPosition;
     public Vector3 worldPosition;
+    [SerializeField] float playerRange = 1;
     
-    // Start is called before the first frame update
-    void Start()
+    void Update()
     {
-        
-        //if (Physics.Raycast(ray, out hit))
-        //{
-        //    Transform objectHit = hit.transform;
-
-        //    worldPosition = cam.ScreenToWorldPoint(screenPosition);
-        //    print(worldPosition);
-        //    // Do something with the object that was hit by the raycast.
-        //}
+        Fire();
     }
 
-    // Update is called once per frame
-    void Update()
+    void Fire()
     {
         if (Input.GetMouseButtonDown(0))
         {
-            RaycastHit hit;
-            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out hit))
+            Vector2 worldPoint = cam.ScreenToWorldPoint(Input.mousePosition);
+            RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero, playerRange);
+            if (hit.collider.tag == "Ant")
             {
-                if (hit.collider.tag == "Ant")
-                {
-                    
-                }
+                hit.transform.gameObject.GetComponent<Ant>().DeInitialize();
+                print(hit.collider.gameObject.name);
             }
         }
-        //screenPosition = Input.mousePosition;
-        //worldPosition = cam.ScreenToWorldPoint(screenPosition);
-        //print(worldPosition);
     }
 }
