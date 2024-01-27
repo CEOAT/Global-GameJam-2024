@@ -20,7 +20,7 @@ public class PlayerFire : MonoBehaviour
     
     void Update()
     {
-        tempTime += Time.deltaTime;
+        tempTime -= Time.deltaTime;
 
         SwitchWeapon();
         CursorMove();
@@ -68,11 +68,9 @@ public class PlayerFire : MonoBehaviour
                 return;
             }
 
-            if(tempTime < weaponList[weaponIndex].fireRate)
+            if(tempTime > 0)
                 return;
 
-            //RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero, playerRange);
-            RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero, currentWeapon.weaponRange);
             detectAnts = Physics2D.OverlapCircleAll(worldPoint, currentWeapon.weaponRange);
             foreach (Collider2D ant in detectAnts)
             {
@@ -83,7 +81,7 @@ public class PlayerFire : MonoBehaviour
                 }
             }
 
-            tempTime = 0;
+            tempTime = weaponList[weaponIndex].fireRate;
         }
     }
 

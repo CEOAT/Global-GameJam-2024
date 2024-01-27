@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 public class KillStreakManager : MonoBehaviour
@@ -26,6 +27,14 @@ public class KillStreakManager : MonoBehaviour
     {
         killCount++;
 
+        ReachKillStreak();
+    }   
+
+    [Button]
+    void GetKillStreak()
+    {
+        int target = (int)killProgression.Evaluate(killStreakCount) * killMultiply;
+        killCount += target;
         ReachKillStreak();
     }
 
