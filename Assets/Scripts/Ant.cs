@@ -38,10 +38,10 @@ namespace GGJ2024
         public event Action<float> OnHealthChange;
         public event Action OnDie;
         public event Action OnClearFinish;
+        
         bool isInitialized;
         Vector3 targetPosition;
         AntMovementTarget movementTarget;
-
         Transform cachedTransform;
 
         public float DelayBeforeCleanUp

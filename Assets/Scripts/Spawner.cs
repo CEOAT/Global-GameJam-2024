@@ -41,10 +41,12 @@ namespace GGJ2024
         protected abstract void OnRetrieve(T ant);
         protected abstract void OnRelease(T ant);
         protected abstract void OnElementDestroy(T ant);
+        protected virtual int ActualTargetCount => targetCount;
+        protected virtual int CurrentCount => pool.CountActive;
 
         void Update()
         {
-            if (pool.CountActive >= targetCount)
+            if (CurrentCount >= ActualTargetCount)
                 return;
             
             if (currentDelayLeft > 0)
