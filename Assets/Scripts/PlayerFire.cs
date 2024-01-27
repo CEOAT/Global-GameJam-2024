@@ -6,10 +6,15 @@ using GGJ2024;
 public class PlayerFire : MonoBehaviour
 {
     public Camera cam;
-    public Vector3 screenPosition;
-    public Vector3 worldPosition;
     [SerializeField] float playerRange = 1;
-    
+    Collider2D[] detectAnts;
+    void OnDrawGizmosSelected()
+    {
+        // Draw a yellow sphere at the transform's position
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawSphere(Input.mousePosition, playerRange);
+    }
+
     void Update()
     {
         Fire();
@@ -20,12 +25,22 @@ public class PlayerFire : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             Vector2 worldPoint = cam.ScreenToWorldPoint(Input.mousePosition);
-            RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero, playerRange);
-            if (hit.collider.tag == "Ant")
+            detectAnts = Physics2D.OverlapCircleAll(worldPoint, playerRange);
+
+            //int hit = Physics2D.CircleCast(worldPoint, playerRange, Vector2.right, contactFilter, results);
+            foreach (Collider2D ant in detectAnts)
             {
-                hit.transform.gameObject.GetComponent<Ant>().DeInitialize();
-                print(hit.collider.gameObject.name);
+                print(ant.gameObject.name);
+                if (ant.GetComponent<Ant>() != null)
+                {
+                    ant.gameObject.GetComponent<Ant>().DeInitialize();
+                }
             }
+            //if (hit.collider.tag == "Ant")
+            //{
+            //    hit.transform.gameObject.GetComponent<Ant>().DeInitialize();
+            //    print(hit.collider.gameObject.name);
+            //}
         }
     }
 }
