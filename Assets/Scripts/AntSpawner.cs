@@ -10,7 +10,7 @@ namespace GGJ2024
         {
             //swarmController.Register(ant);
             ant.transform.position = spawnPosition.position;
-            ant.OnDie += ()=> Release(ant);
+            ant.OnClearFinish += ()=> Release(ant);
             ant.Initialize();
         }
 
