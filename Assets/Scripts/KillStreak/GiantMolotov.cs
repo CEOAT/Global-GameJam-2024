@@ -6,6 +6,6 @@ public class GiantMolotov : BaseKillStreak
 {
     public override void Fire(Vector2 mousePosition)
     {
-
+        base.Fire(mousePosition);
     }
 }
