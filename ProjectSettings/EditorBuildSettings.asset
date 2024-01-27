@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/TestAntAI.unity
-    guid: 3318b8dda01132645849013b2b3b844e
+    path: Assets/Scenes/Menu_Scene.unity
+    guid: 5441dfbee853da944938ac0e3a4eef48
+  - enabled: 1
+    path: Assets/Scenes/Main_Scene.unity
+    guid: e11abf9a39dce044093fa31617eebe96
   m_configObjects: {}

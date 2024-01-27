@@ -37,6 +37,6 @@ public class UIGameover : MonoBehaviour
 
     void OnClickMainmenu()
     {
-        SceneManager.LoadScene(2);
+        SceneManager.LoadScene(0);
     }
 }
