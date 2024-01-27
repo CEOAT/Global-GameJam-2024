@@ -176,6 +176,10 @@ PrefabInstance:
       value: Spawner
       objectReference: {fileID: 0}
     - target: {fileID: 6988565896109712552, guid: 3119412ed6a11404094d1fd442406f6e, type: 3}
+      propertyPath: prefab
+      value: 
+      objectReference: {fileID: 2248218639446803560, guid: 8b5ee966ba7ce01468a6311fff3c26a6, type: 3}
+    - target: {fileID: 6988565896109712552, guid: 3119412ed6a11404094d1fd442406f6e, type: 3}
       propertyPath: spawnPosition
       value: 
       objectReference: {fileID: 223734618}
@@ -632,10 +636,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerFire
       objectReference: {fileID: 0}
-    - target: {fileID: 5168972778359000763, guid: fe1ef89e46c99c74ab19035fc7cf86bc, type: 3}
-      propertyPath: cam
-      value: 
-      objectReference: {fileID: 1640509485}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
