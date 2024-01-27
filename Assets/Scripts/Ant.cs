@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using DG.Tweening;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -15,7 +16,8 @@ namespace GGJ2024
         public AntState CurrentState => currentState;
         [SerializeField] AntState currentState;
 
-        [Header("Movement")]
+        [Header("Movement")] 
+        [SerializeField] float speedMultiplier = 1f;
         [SerializeField] float currentSpeed = 1f;
         [SerializeField] float minSpeed = 1f;
         [SerializeField] float maxSpeed = 5f;
@@ -24,12 +26,17 @@ namespace GGJ2024
         [SerializeField] float delayBeforeCleanUp = 1f;
         [SerializeField] ParticleSystem decalParticle;
 
+        [Header("Talking")] 
+        [SerializeField] AntMessageBalloon messageBalloon;
+        
         public event Action<float> OnHealthChange;
         public event Action OnDie;
         public event Action OnClearFinish;
         bool isInitialized;
         Vector3 targetPosition;
         AntMovementTarget movementTarget;
+        
+        public bool IsCannotChangeTarget { get; private set; }
         
         public void Initialize()
         {
@@ -46,12 +53,19 @@ namespace GGJ2024
 
         public void DeInitialize()
         {
+            speedMultiplier = 1f;
+            IsCannotChangeTarget = false;
             isInitialized = false;
             OnHealthChange = null;
             OnClearFinish = null;
             OnDie = null;
             movementTarget = null;
             gameObject.SetActive(false);
+        }
+
+        public void MarkAsCannotChangeTarget()
+        {
+            IsCannotChangeTarget = true;
         }
 
         [ContextMenu(nameof(Kill))]
@@ -74,13 +88,20 @@ namespace GGJ2024
             OnHealthChange?.Invoke(currentHealth);
             if (currentHealth <= 0)
             {
-                currentState = AntState.Dead;
-                isMoving = false;
-                OnDie?.Invoke();
-                Clear();
+                Die();
             }
         }
-        
+
+        void Die()
+        {
+            HideBalloon();
+            CancelShake();
+            currentState = AntState.Dead;
+            isMoving = false;
+            OnDie?.Invoke();
+            Clear();
+        }
+
         public void Clear()
         {
             if (currentState == AntState.Clearing)
@@ -106,8 +127,14 @@ namespace GGJ2024
             currentState = AntState.Cleared;
         }
 
-        public void SetMovementTarget(AntMovementTarget target)
+        public void SetMovementTarget(AntMovementTarget target, bool isCancelPendingTarget)
         {
+            if (IsCannotChangeTarget)
+                return;
+            
+            if (isCancelPendingTarget)
+                targetPosition = transform.position;
+            
             movementTarget = target;
         }
 
@@ -126,22 +153,50 @@ namespace GGJ2024
             if (movementTarget == null)
                 return;
 
-            if (!movementTarget.IsValid())
+            if (!movementTarget.CheckIsValid())
                 return;
 
             if (transform.position == targetPosition)
             {
                 currentSpeed = Random.Range(minSpeed, maxSpeed);
+                movementTarget.CheckIsReach(transform.position);
                 SetTargetPosition(movementTarget.GetPosition());
-                RotateTowardsDirection();
             }
+            else
+                RotateTowardsDirection();
 
-            transform.position = Vector3.MoveTowards(transform.position, targetPosition,Time.deltaTime * currentSpeed);
+            transform.position = Vector3.MoveTowards(transform.position, targetPosition,Time.deltaTime * currentSpeed * speedMultiplier);
         }
 
         void RotateTowardsDirection()
         {
             transform.right = targetPosition - transform.position;
+        }
+
+        public void Say(string message, float duration)
+        {
+            messageBalloon.Play(message, duration);
+        }
+
+        public void HideBalloon()
+        {
+            messageBalloon.Hide();
+        }
+
+        public void DOShake(float duration)
+        {
+            CancelShake();
+            transform.DOShakePosition(duration);
+        }
+
+        void CancelShake()
+        {
+            transform.DOKill(true);
+        }
+
+        public void SetSpeedMultiplier(float value)
+        {
+            speedMultiplier = value;
         }
     }
 
