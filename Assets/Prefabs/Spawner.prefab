@@ -49,14 +49,15 @@ MonoBehaviour:
   startUpCount: 0
   defaultCapacity: 10
   targetCount: 100
-  maxSize: 300
+  maxSize: 1000
   minSpawnDelay: 0
   maxSpawnDelay: 0.1
   spawnPosition: {fileID: 7616203606927338703}
-  swarmController: {fileID: 0}
   attackTarget: {fileID: 0}
   attackCountPercentage: 0.3
   angryAntSpeedMultiplier: 5
+  isEnableSwarm: 0
+  swarmController: {fileID: 0}
   funeralChance:
     chanceRate: 1
     poolSize: 15
