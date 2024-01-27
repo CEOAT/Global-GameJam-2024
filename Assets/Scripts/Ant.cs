@@ -1,4 +1,6 @@
 ﻿using System;
+using Unity.Mathematics;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -25,8 +27,7 @@ namespace GGJ2024
             isInitialized = true;
             gameObject.SetActive(true);
             currentHealth = maxHealth;
-            currentSpeed = Random.Range(minSpeed, maxSpeed);
-            targetPosition = transform.position;
+            SetNextposition();
         }
 
         public void DeInitialize()
@@ -58,12 +59,40 @@ namespace GGJ2024
 
         public void SetTargetPosition(Vector3 pos)
         {
+            currentSpeed = Random.Range(minSpeed, maxSpeed);
             targetPosition = pos;
+            RotateTowardsDirection();
+        }
+
+        public void SetNextposition()
+        {
+            currentSpeed = Random.Range(minSpeed, maxSpeed);
+            SetTargetPosition(GetRandomPositionInScreen());
+            RotateTowardsDirection();
         }
 
         void Update()
         {
+            if(transform.position == targetPosition)
+                SetNextposition();
+
             transform.position = Vector3.MoveTowards(transform.position, targetPosition,Time.deltaTime * currentSpeed);
+        }
+
+        Vector3 GetRandomPositionInScreen()
+        {
+            float screenWidth = Camera.main.orthographicSize * 2 * Screen.width / Screen.height;
+            float screenHeight = Camera.main.orthographicSize * 2;
+
+            float randomX = Random.Range(-screenWidth / 2, screenWidth / 2);
+            float randomY = Random.Range(-screenHeight / 2, screenHeight / 2);
+
+            return new Vector3(randomX, randomY, 0);
+        }
+
+        void RotateTowardsDirection()
+        {
+            transform.right = targetPosition - transform.position;
         }
     }
 }
