@@ -558,6 +558,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4969a9b5f0be7c4bb2a63f90a0a96d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  UIKillStreak: {fileID: 0}
   killCount: 0
   killStreakConfig: []
   killProgression:
@@ -568,7 +569,8 @@ MonoBehaviour:
     m_RotationOrder: 4
   killMultiply: 0
   killStreakCount: 0
-  _target: 0
+  isUseKillStreak: 0
+  currentKillStreak: {fileID: 0}
 --- !u!4 &2055002488
 Transform:
   m_ObjectHideFlags: 0

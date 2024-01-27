@@ -19,7 +19,6 @@ public class MainMenuController : MonoBehaviour
     [Header("MainMenuPanel")]
     [SerializeField] Button mainMenu_startButton;
     [SerializeField] Button mainMenu_howToPlayButton;
-    [SerializeField] Button mainMenu_quitButton;
 
     [Header("HowToPlayPanel")]
     [SerializeField] Button howToPlay_backButton;
@@ -35,15 +34,13 @@ public class MainMenuController : MonoBehaviour
     {
         mainMenu_startButton.onClick.AddListener(OnStart);
         mainMenu_howToPlayButton.onClick.AddListener(OnHowToPlay);
-        mainMenu_quitButton.onClick.AddListener(OnQuit);
 
         howToPlay_backButton.onClick.AddListener(OnBack);
     }
 
     public void OnStart()
     {
-        // to game scene
-        //SceneManager.LoadScene();
+        SceneManager.LoadScene(1);
     }
 
     public void OnBack()
