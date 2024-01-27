@@ -21,11 +21,15 @@ public class PlayerFire : MonoBehaviour
         {
             Vector2 worldPoint = cam.ScreenToWorldPoint(Input.mousePosition);
             RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero, playerRange);
-            if (hit.collider.tag == "Ant")
+            if(hit)
             {
-                hit.transform.gameObject.GetComponent<Ant>().DeInitialize();
-                print(hit.collider.gameObject.name);
+                if (hit.collider.tag == "Ant")
+                {
+                    hit.transform.gameObject.GetComponent<Ant>().DeInitialize();
+                    print(hit.collider.gameObject.name);
+                }
             }
+            
         }
     }
 }
