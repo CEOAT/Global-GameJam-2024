@@ -7,6 +7,7 @@ using UnityEngine;
 
 public class KillStreakManager : MonoBehaviour
 {
+    public UIKillStreak UIKillStreak;
     public static KillStreakManager Inst;
 
     public int killCount = 0;
@@ -23,25 +24,35 @@ public class KillStreakManager : MonoBehaviour
         Inst = this;
     }
 
+    private void Update() {
+        UIKillStreak.SetKillStreakUI(GetTargetKill(),killCount);
+    }
+
     public void AddKillCount()
     {
-        killCount++;
+        if(currentKillStreak)
+            return;
 
+        killCount++;
         ReachKillStreak();
     }   
+
+    int GetTargetKill()
+    {
+        int target = (int)killProgression.Evaluate(killStreakCount) * killMultiply;
+        return target;
+    }
 
     [Button]
     void GetKillStreak()
     {
-        int target = (int)killProgression.Evaluate(killStreakCount) * killMultiply;
-        killCount += target;
+        killCount += GetTargetKill();
         ReachKillStreak();
     }
 
     void ReachKillStreak()
     {
-        int target = (int)killProgression.Evaluate(killStreakCount) * killMultiply;
-        if(killCount >= target)
+        if(killCount >= GetTargetKill())
         {
             currentKillStreak = killStreakConfig[UnityEngine.Random.Range(0,killStreakConfig.Count)];
             isUseKillStreak = true;
