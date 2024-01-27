@@ -15,7 +15,6 @@ public class PlayerFire : MonoBehaviour
     void Update()
     {
         cursor.transform.position = new Vector3(cam.ScreenToWorldPoint(Input.mousePosition).x, cam.ScreenToWorldPoint(Input.mousePosition).y, 0);
-        //cursor.transform.position = cam.ScreenToWorldPoint(Input.mousePosition);
         Fire();
     }
 
