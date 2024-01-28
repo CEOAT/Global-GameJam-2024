@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 2401412336086287383}
   m_Layer: 6
   m_Name: Ant
-  m_TagString: Ant
+  m_TagString: Entity
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -113,6 +113,7 @@ MonoBehaviour:
   decalParticle: {fileID: 0}
   messageBalloon: {fileID: 8046623801848540965}
   antVFX: {fileID: 0}
+  damage: 1
 --- !u!61 &6609500012099126192
 BoxCollider2D:
   m_ObjectHideFlags: 0

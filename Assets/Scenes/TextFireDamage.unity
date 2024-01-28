@@ -958,6 +958,14 @@ PrefabInstance:
       propertyPath: UIKillStreak
       value: 
       objectReference: {fileID: 459024707}
+    - target: {fileID: 4157772420296532510, guid: 1ff85a64fbc01bd459afe8a36abcace6, type: 3}
+      propertyPath: killStreakConfig.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4157772420296532510, guid: 1ff85a64fbc01bd459afe8a36abcace6, type: 3}
+      propertyPath: killStreakConfig.Array.data[0]
+      value: 
+      objectReference: {fileID: 2293705038098068505}
     - target: {fileID: 8961654042785083513, guid: 1ff85a64fbc01bd459afe8a36abcace6, type: 3}
       propertyPath: m_LocalPosition.x
       value: -2.903006
@@ -1003,6 +1011,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1ff85a64fbc01bd459afe8a36abcace6, type: 3}
+--- !u!114 &2293705038098068505 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6862107146291696007, guid: 1ff85a64fbc01bd459afe8a36abcace6, type: 3}
+  m_PrefabInstance: {fileID: 2293705038098068504}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e852d3f51d3da794881f62a1d5f4e5d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &4667567434191181051
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -14,9 +14,9 @@ public class DamageTrigger : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other) 
     {
-        if(other.tag == "Ant" && other.isTrigger)
+        if(other.tag == "Entity" && other.isTrigger)
         {
-            other.GetComponent<Ant>().TakeDamage(damage,false);
+            other.GetComponent<IEntity>().TakeDamage(damage,false);
         }
     }
 }
