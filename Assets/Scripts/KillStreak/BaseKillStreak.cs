@@ -10,6 +10,7 @@ public abstract class BaseKillStreak : MonoBehaviour
     public int damage;
     public float fireRate;
     protected float tempTime;
+    public Sprite logo;
 
     public Action onOutOfAmmo; 
 
