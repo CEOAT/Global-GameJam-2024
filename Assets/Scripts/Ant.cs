@@ -34,6 +34,9 @@ namespace GGJ2024
 
         [Header("Damage")]
         public int damage = 1;
+
+        [Header("Sound")]
+        [SerializeField] AudioClip dieSound;
         
         public event Action<float> OnHealthChange;
         public event Action OnDie;
@@ -43,7 +46,7 @@ namespace GGJ2024
         Vector3 targetPosition;
         AntMovementTarget movementTarget;
         Transform cachedTransform;
-
+        AudioSource audioSource;
         public float DelayBeforeCleanUp
         {
             get => delayBeforeCleanUp;
@@ -55,6 +58,8 @@ namespace GGJ2024
         void Awake()
         {
             cachedTransform = transform;
+
+            audioSource = GetComponent<AudioSource>();
         }
 
         public void Initialize()
@@ -122,6 +127,7 @@ namespace GGJ2024
                 KillStreakManager.Inst.AddKillCount();
             OnDie?.Invoke();
             antVFX.ExplodeKill();
+            audioSource.PlayOneShot(dieSound);
             
             Clear();
         }
