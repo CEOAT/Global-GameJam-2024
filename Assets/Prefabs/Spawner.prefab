@@ -29,7 +29,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 7616203606927338703}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6988565896109712552
@@ -44,11 +45,58 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9f2782480a942d99bcddb7fa4adddaa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefab: {fileID: 2248218639446803560, guid: 8b5ee966ba7ce01468a6311fff3c26a6, type: 3}
-  startUpCount: 500
-  defaultCapacity: 500
-  targetCount: 500
-  maxSize: 500
+  prefab: {fileID: 2248218639446803560, guid: d12cac3aa0b686a479160183fe8188dd, type: 3}
+  startUpCount: 0
+  defaultCapacity: 10
+  targetCount: 100
+  maxSize: 300
   minSpawnDelay: 0
-  maxSpawnDelay: 1
+  maxSpawnDelay: 0.1
+  spawnPosition: {fileID: 7616203606927338703}
   swarmController: {fileID: 0}
+  attackTarget: {fileID: 0}
+  attackCountPercentage: 0.3
+  angryAntSpeedMultiplier: 5
+  funeralChance:
+    chanceRate: 1
+    poolSize: 15
+    boolList: 
+  mourningSentencePrefixList:
+  - No!!!
+  antNameList:
+  - Lisa
+  - John
+  shoutSentenceList:
+  - No!!!!!!!!
+  mourningDistance: 1
+--- !u!1 &8338097134574160891
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7616203606927338703}
+  m_Layer: 0
+  m_Name: SpawnPositon
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7616203606927338703
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8338097134574160891}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -7.41, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 553686676939568134}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using GGJ2024;
 
@@ -13,16 +14,15 @@ public class PlayerFire : MonoBehaviour
     [SerializeField] int weaponIndex = 0;
     [SerializeField] List<WeaponScriptableObject> weaponList;
     private bool isAttackReady = true;
+    float tempTime;
 
     Collider2D[] detectAnts;
-    bool isUseKillStreak = false;
-    void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(Vector3.zero, playerRange);
-    }
+   
+    
     void Update()
     {
+        tempTime -= Time.deltaTime;
+
         SwitchWeapon();
         CursorMove();
         Fire();
@@ -59,33 +59,47 @@ public class PlayerFire : MonoBehaviour
 
     void Fire()
     {
-        if(isUseKillStreak)
+        if(GameManager.Inst.isGameOver)
             return;
-
-        if (Input.GetMouseButtonDown(0) && isAttackReady == true)
+            
+        if (Input.GetMouseButtonDown(0))
         {
-            print("Fire");
-            StartCoroutine(CountAttackCooldown());
             Vector2 worldPoint = cam.ScreenToWorldPoint(Input.mousePosition);
-            //RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero, playerRange);
-            RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero, currentWeapon.weaponRange);
-            detectAnts = Physics2D.OverlapCircleAll(worldPoint, currentWeapon.weaponRange);
-            foreach (Collider2D ant in detectAnts)
+            if(KillStreakManager.Inst.isUseKillStreak)
             {
-                if (ant.GetComponent<Ant>() != null)
+                KillStreakManager.Inst.FireKillStreak(worldPoint);
+                return;
+            }
+
+            if(tempTime > 0)
+                return;
+            
+            tempTime = weaponList[weaponIndex].fireRate;
+
+            detectAnts = Physics2D.OverlapCircleAll(worldPoint, playerRange);
+            var ants = detectAnts
+                .Select(hit => hit.GetComponent<Ant>())
+                .Where(a => a);
+
+            Ant oneDeadAnt = null;
+            foreach (var ant in ants)
+            {
+                ant.TakeDamage(currentWeapon.weaponDamage);
+                if (ant.CurrentState != AntState.Alive)
                 {
-                    //ant.transform.gameObject.GetComponent<Ant>().TakeDamage(1f);
-                    ant.transform.gameObject.GetComponent<Ant>().TakeDamage(currentWeapon.weaponDamage);
                     KillStreakManager.Inst.AddKillCount();
+                    oneDeadAnt = ant;
                 }
             }
+
+            if (oneDeadAnt)
+                AntSpawner.Instance.TryStartFuneral(oneDeadAnt);
         }
     }
-    private IEnumerator CountAttackCooldown()
+
+    void OnDrawGizmosSelected()
     {
-        isAttackReady = false;
-        yield return new WaitForSeconds(weaponList[weaponIndex].fireRate);
-        isAttackReady = true;
-        print("Ready");
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(Vector3.zero, playerRange);
     }
 }

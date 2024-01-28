@@ -14,13 +14,12 @@ namespace GGJ2024
         [SerializeField] float minSpawnDelay = 0;
         [SerializeField] float maxSpawnDelay = 1f;
 
-
         float currentDelayLeft;
 
         public ObjectPool<T> Pool => pool;
         ObjectPool<T> pool;
         
-        void Awake()
+        protected virtual void Awake()
         {
             pool = new ObjectPool<T>(
                 () => Instantiate(prefab, transform, true),

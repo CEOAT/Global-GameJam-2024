@@ -24,7 +24,7 @@ public class CatRumble : BaseKillStreak
         CreateCatTransform();
     }
 
-    public override void Fire(Vector2 mousePosition)
+    public override void OnFire(Vector2 mousePosition)
     {
         CreateCatTransform();
     }

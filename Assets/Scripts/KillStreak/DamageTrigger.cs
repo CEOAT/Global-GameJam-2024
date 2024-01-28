@@ -16,7 +16,7 @@ public class DamageTrigger : MonoBehaviour
     {
         if(other.tag == "Ant" && other.isTrigger)
         {
-            other.GetComponent<Ant>().TakeDamage(damage);
+            other.GetComponent<Ant>().TakeDamage(damage,false);
         }
     }
 }
