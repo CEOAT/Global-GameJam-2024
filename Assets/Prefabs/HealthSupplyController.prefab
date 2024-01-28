@@ -45,8 +45,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthSupplyPrefab: {fileID: 7384592433429354920, guid: 29587ad1b97114245a0037df9a9a1899, type: 3}
-  spawnTimeMin: 1
-  spawnTimeMax: 5
-  spawnPositionMin: {x: -9.1, y: -5.11}
-  spawnPositionMax: {x: 9.06, y: 5.11}
+  spawnTimeMin: 5
+  spawnTimeMax: 10
+  spawnPositionMin: {x: -7.26, y: -3.39}
+  spawnPositionMax: {x: 4.72, y: 4.08}
   antTarget: {fileID: 0}

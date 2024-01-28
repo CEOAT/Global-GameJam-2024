@@ -100,7 +100,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d642a972c3d2c54a95815b57346eaa8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHitpoint: 0
+  maxHitpoint: 100
   healthImage: {fileID: 7381009688240588894}
 --- !u!50 &60275463896061100
 Rigidbody2D:

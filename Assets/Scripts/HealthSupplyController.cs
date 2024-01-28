@@ -27,10 +27,13 @@ public class HealthSupplyController : MonoBehaviour
     
     IEnumerator CreateSequence()
     {
-        CreateHealthSupply();
-        RandomTime();
-        yield return new WaitForSeconds(randomTime);
-        StartCreateHealthSupply();
+        if(!GameManager.Inst.isGameOver)
+        {
+            CreateHealthSupply();
+            RandomTime();
+            yield return new WaitForSeconds(randomTime);
+            StartCreateHealthSupply();
+        } 
     }
 
     void RandomTime()
