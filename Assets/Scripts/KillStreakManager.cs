@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class KillStreakManager : MonoBehaviour
 {
@@ -18,6 +19,10 @@ public class KillStreakManager : MonoBehaviour
     public bool isUseKillStreak = false;
 
     public BaseKillStreak currentKillStreak;
+
+    [Header("Kill Streak Logo")]
+    [SerializeField] private GameObject logoGroupObject;
+    [SerializeField] private Image logoImage;
 
     public void Awake()
     {
@@ -59,7 +64,17 @@ public class KillStreakManager : MonoBehaviour
             killCount = 0;
             killStreakCount++;
             currentKillStreak.Initilize();
+            ShowKillStreakIcon();
         }
+    }
+    private void ShowKillStreakIcon()
+    {
+        logoGroupObject.SetActive(true);
+        logoImage.sprite = currentKillStreak.logo;
+    }
+    private void HideKillSterakIcon()
+    {
+        logoGroupObject.SetActive(false);
     }
 
     public void FireKillStreak(Vector2 mousePosition)
@@ -71,5 +86,6 @@ public class KillStreakManager : MonoBehaviour
     {
         currentKillStreak = null;
         isUseKillStreak = false;
+        Invoke("HideKillSterakIcon", 2f);
     }
 }
