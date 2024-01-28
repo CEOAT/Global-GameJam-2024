@@ -1,12 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 public enum MainMenuStage
 {
     MainMenu,
     HowToPlay
+    //เพื่อ Custom ตาม Panel ต่างๆ 
 }
 
 public class MainMenuController : MonoBehaviour
@@ -15,27 +18,35 @@ public class MainMenuController : MonoBehaviour
 
     [SerializeField] CanvasGroup mainMenuGroup;
     [SerializeField] CanvasGroup howToPlayGroup;
+    [SerializeField] CanvasGroup VegetaGround;
+    [SerializeField] CanvasGroup CreditGroup;
 
     [Header("MainMenuPanel")]
-    [SerializeField] Button mainMenu_startButton;
-    [SerializeField] Button mainMenu_howToPlayButton;
+    [SerializeField] MainButtonAnim mainMenu_startButton;
+    [SerializeField] MainButtonAnim mainMenu_howToPlayButton;
+    [SerializeField] MainButtonAnim mainMenu_Credit;
 
     [Header("HowToPlayPanel")]
-    [SerializeField] Button howToPlay_backButton;
+    [SerializeField] MainButtonAnim howToPlay_backButton;
+    [SerializeField] MainButtonAnim Credit_backButton;
+    
 
     private void Start()
     {
         AddListener();
-        EnableMainMenu(true);
+        EnableVegeta(true);
         EnableHowToPlay(false);
+        EnableCredit(false);
     }
 
     void AddListener()
     {
-        mainMenu_startButton.onClick.AddListener(OnStart);
-        mainMenu_howToPlayButton.onClick.AddListener(OnHowToPlay);
+        mainMenu_startButton.AddListener(OnStart);
+        mainMenu_howToPlayButton.AddListener(OnHowToPlay);
+        mainMenu_Credit.AddListener(OnCredit);
 
-        howToPlay_backButton.onClick.AddListener(OnBack);
+        howToPlay_backButton.AddListener(OnBack);
+        Credit_backButton.AddListener(OnBackCredit);
     }
 
     public void OnStart()
@@ -50,12 +61,26 @@ public class MainMenuController : MonoBehaviour
         EnableHowToPlay(false);
     }
 
+    public void OnBackCredit()
+    {
+        mainMenuStage = MainMenuStage.MainMenu;
+        EnableMainMenu(true);
+        EnableCredit(false);
+    }
+
     public void OnHowToPlay()
     {
         mainMenuStage = MainMenuStage.HowToPlay;
         EnableMainMenu(false);
         EnableHowToPlay(true);
     }
+    public void OnCredit()
+    {
+        mainMenuStage = MainMenuStage.MainMenu;
+        EnableMainMenu(false);
+        EnableCredit(true);
+    }
+    
 
     public void OnQuit()
     {
@@ -80,6 +105,38 @@ public class MainMenuController : MonoBehaviour
 
         }
     }
+    void EnableCredit(bool enable)
+    {
+        if (enable)
+        {
+            CreditGroup.alpha = 1;
+            CreditGroup.blocksRaycasts = true;
+            CreditGroup.interactable = true;
+        }
+        else
+        {
+            CreditGroup.alpha = 0;
+            CreditGroup.blocksRaycasts = false;
+            CreditGroup.interactable = false;
+
+        }
+    }
+    void EnableVegeta(bool enable)
+    {
+        if (enable)
+        {
+            VegetaGround.alpha = 1;
+            VegetaGround.blocksRaycasts = true;
+            VegetaGround.interactable = true;
+        }
+        else
+        {
+            VegetaGround.alpha = 0;
+            VegetaGround.blocksRaycasts = false;
+            VegetaGround.interactable = false;
+
+        }
+    }
 
     void EnableHowToPlay(bool enable)
     {
@@ -95,5 +152,11 @@ public class MainMenuController : MonoBehaviour
             howToPlayGroup.blocksRaycasts = false;
             howToPlayGroup.interactable = false;
         }
+    }
+    
+    public void pressClickToContinue(BaseEventData data)
+    {
+        DOTween.To(() => VegetaGround.alpha, x => VegetaGround.alpha = x, 0f, 1.5f)
+            .OnComplete(() => { EnableMainMenu(true); EnableVegeta(false);});
     }
 }

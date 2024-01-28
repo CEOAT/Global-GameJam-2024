@@ -32,7 +32,7 @@ public class LocalAntVFX : MonoBehaviour
   {
     _antVisual.gameObject.SetActive(false);
     _smoke.enabled = true;
-    _smoke.Play(animState[UnityEngine.Random.Range(0,1)],-1,0);
+    _smoke.Play(animState[UnityEngine.Random.Range(0,2)],-1,0);
     GetTimeToclear();
     _smoke.speed = 1;
     Blood.Play();
