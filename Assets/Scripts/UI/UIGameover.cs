@@ -12,6 +12,9 @@ public class UIGameover : MonoBehaviour
     [SerializeField] Button mainmenuButton;
     CanvasGroup canvasGroup;
 
+    [Header("Sound")]
+    [SerializeField] AudioSource clickSound;
+
     void Start()
     {
         canvasGroup = GetComponent<CanvasGroup>();
@@ -32,11 +35,13 @@ public class UIGameover : MonoBehaviour
 
     void OnClickRetry()
     {
+        clickSound.Play();
         SceneManager.LoadScene(1);
     }
 
     void OnClickMainmenu()
     {
+        clickSound.Play();
         SceneManager.LoadScene(0);
     }
 }

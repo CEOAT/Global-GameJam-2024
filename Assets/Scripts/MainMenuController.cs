@@ -29,7 +29,6 @@ public class MainMenuController : MonoBehaviour
     [Header("HowToPlayPanel")]
     [SerializeField] MainButtonAnim howToPlay_backButton;
     [SerializeField] MainButtonAnim Credit_backButton;
-    
 
     private void Start()
     {
