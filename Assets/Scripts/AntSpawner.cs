@@ -17,7 +17,8 @@ namespace GGJ2024
         [SerializeField] float angryAntSpeedMultiplier = 5f;
 
         [Header("Swarm")]
-        [SerializeField] SwarmController swarmController;
+        SwarmController swarmController;
+        [SerializeField] List<SwarmController> allSwarmController = new List<SwarmController>();
        
         [Header("Funeral")]
         
@@ -76,8 +77,7 @@ namespace GGJ2024
         [Button]
         public void EnableSwarm(int amount = 200)
         {
-            if (swarmController == null)
-                return;
+            swarmController = allSwarmController[Random.Range(0,allSwarmController.Count)];
 
             var antList = new List<Ant>();
             for (int i = 0; i < amount; i++)
