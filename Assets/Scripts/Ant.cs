@@ -10,7 +10,7 @@ namespace GGJ2024
     {
         [Header("Health")] 
         [SerializeField] bool isMoving;
-        [SerializeField] float maxHealth = 1;
+        [SerializeField] float baseMaxHealth = 1;
         [SerializeField] float currentHealth =1;
 
         public AntState CurrentState => currentState;
@@ -69,7 +69,7 @@ namespace GGJ2024
 
             isInitialized = true;
             gameObject.SetActive(true);
-            SetHealth(maxHealth);
+            SetHealth(GetMaxHealth());
             currentState = AntState.Alive;
             isMoving = true;
             targetPosition = cachedTransform.position;
@@ -109,7 +109,7 @@ namespace GGJ2024
             if (currentState != AntState.Alive)
                 return;
 
-            currentHealth = Mathf.Clamp(value, 0, maxHealth);
+            currentHealth = Mathf.Clamp(value, 0, GetMaxHealth());
             OnHealthChange?.Invoke(currentHealth);
             if (currentHealth <= 0)
             {
@@ -130,6 +130,11 @@ namespace GGJ2024
             audioSource.PlayOneShot(dieSound);
             
             Clear();
+        }
+
+        public float GetMaxHealth()
+        {
+            return KillStreakManager.Inst.killProgression.Evaluate(KillStreakManager.Inst.killStreakCount) * baseMaxHealth;
         }
 
         public void Clear()
