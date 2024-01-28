@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 using GGJ2024;
 using Sirenix.OdinInspector;
+using Unity.Mathematics;
 using UnityEngine;
 using Random = System.Random;
 
@@ -31,6 +32,7 @@ public class LocalAntVFX : MonoBehaviour
   public void ExplodeKill()
   {
     _antVisual.gameObject.SetActive(false);
+    _smoke.transform.rotation = quaternion.Euler(Vector3.zero);
     _smoke.enabled = true;
     _smoke.Play(animState[UnityEngine.Random.Range(0,2)],-1,0);
     GetTimeToclear();

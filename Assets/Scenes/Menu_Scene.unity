@@ -14622,8 +14622,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "2DArtist\r\nNattharika Suebsakuntong \r\n\r\nCool Senior\r\nPhun Peeticharoenthum
     \r\n\r\nGameDesigner\r\nWai Wanitchanon\r\n\r\nProgrammer \r\nPanit Suebsakuntong
-    \r\nSasiroj Tiptipakorn\r\n\r\nRigger / 3D Generalist \r\nIttinan Plumjit\r\n\r\nTechnically
-    Artist \r\nThanaphum chonrat"
+    \r\nSasiroj Tiptipakorn\r\n\r\nRigger / 3D Generalist \r\nIttinan Plumjit\r\n\nMusic
+    Composer \r\nTat Setsantipong\r\n\nTechnically Artist \r\nThanaphum chonrat"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
