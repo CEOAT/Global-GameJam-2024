@@ -19,7 +19,8 @@ public class PlayerFire : MonoBehaviour
     float tempTime;
 
     Collider2D[] detectAnts;
-   
+    [SerializeField] private AudioSource audioSource;
+
     
     void Update()
     {
@@ -77,6 +78,7 @@ public class PlayerFire : MonoBehaviour
                 return;
             
             tempTime = weaponList[weaponIndex].fireRate;
+            PlayerWeaponSound(weaponList[weaponIndex].weaponSound);
 
             detectAnts = Physics2D.OverlapCircleAll(worldPoint, playerRange);
             var ants = detectAnts
@@ -102,6 +104,12 @@ public class PlayerFire : MonoBehaviour
             if (oneDeadAnt)
                 AntSpawner.Instance.TryStartFuneral(oneDeadAnt);
         }
+    }
+    
+    private void PlayerWeaponSound(AudioClip audioClip)
+    {
+        audioSource.clip = audioClip;
+        audioSource.Play();
     }
 
     void OnDrawGizmosSelected()

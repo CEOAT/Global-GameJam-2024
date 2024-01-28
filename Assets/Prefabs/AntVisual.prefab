@@ -110,7 +110,7 @@ MonoBehaviour:
   speedMultiplier: 1
   currentSpeed: 1
   minSpeed: 2
-  maxSpeed: 4
+  maxSpeed: 5
   delayBeforeCleanUp: 2.5
   decalParticle: {fileID: 0}
   messageBalloon: {fileID: 8046623801848540965}

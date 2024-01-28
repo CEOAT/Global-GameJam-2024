@@ -9,5 +9,6 @@ public class WeaponScriptableObject : ScriptableObject
     public float weaponRange;
     public float fireRate;
     public Sprite weaponSprite;
+    public AudioClip weaponSound;
 
 }

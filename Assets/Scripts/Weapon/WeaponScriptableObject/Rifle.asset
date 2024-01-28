@@ -16,3 +16,4 @@ MonoBehaviour:
   weaponRange: 0.25
   fireRate: 0.05
   weaponSprite: {fileID: 21300000, guid: e6d30ef88d953db4d9d494ee99b8225a, type: 3}
+  weaponSound: {fileID: 8300000, guid: 758ea7862ef2b484b876a43044b88808, type: 3}

@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9a1afcc632d2fb41b925b120b2397e1, type: 3}
   m_Name: Rocket
   m_EditorClassIdentifier: 
-  weaponDamage: 10
+  weaponDamage: 8
   weaponRange: 6
   fireRate: 6
   weaponSprite: {fileID: 21300000, guid: 92d23db80059b874e9a6464eb60e7cc5, type: 3}
+  weaponSound: {fileID: 8300000, guid: f7cccf107b8413f468595a979f22943e, type: 3}
