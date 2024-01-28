@@ -1,59 +1,63 @@
 using System.Collections;
 using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 public class HealthSupplyController : MonoBehaviour
 {
-    [SerializeField] private GameObject healthSupplyPrefab;
-    [SerializeField] private float spawnTimeMin;
-    [SerializeField] private float spawnTimeMax;
-    [SerializeField]
-    private float randomTime;
+    [SerializeField] HealthSupply healthSupplyPrefab;
+    [SerializeField] float spawnTimeMin;
+    [SerializeField] float spawnTimeMax;
+    float randomTime;
 
-    [SerializeField] private Vector2 spawnPositionMin;
-    [SerializeField] private Vector2 spawnPositionMax;
-    private Vector2 spawnPosition;
+    [SerializeField] Vector2 spawnPositionMin;
+    [SerializeField] Vector2 spawnPositionMax;
 
-    // [SerializeField] private player health script;
+    [SerializeField] AntTarget antTarget;
 
-    private void OnDrawGizmosSelected()
+    void Start()
+    {
+        StartCreateHealthSupply();
+    }
+    
+    void StartCreateHealthSupply()
+    {
+        StartCoroutine(CreateSequence());
+    }
+    
+    IEnumerator CreateSequence()
+    {
+        CreateHealthSupply();
+        RandomTime();
+        yield return new WaitForSeconds(randomTime);
+        StartCreateHealthSupply();
+    }
+
+    void RandomTime()
+    {
+        randomTime = Random.Range(spawnTimeMin, spawnTimeMax);
+    }
+
+    Vector2 RandomSpawnPoint()
+    {
+        return new Vector2(Random.Range(spawnPositionMin.x, spawnPositionMax.x), 
+                                    Random.Range(spawnPositionMin.y, spawnPositionMax.y));
+    }
+
+    [Button]
+    void CreateHealthSupply()
+    {
+        HealthSupply supplyTemp = Instantiate(healthSupplyPrefab, RandomSpawnPoint(), healthSupplyPrefab.transform.rotation);
+        supplyTemp.onHeal += antTarget.Heal;
+        // supplyTemp get component health supply and assign player health script
+    }
+
+    void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;
         Gizmos.DrawLine(spawnPositionMin, new Vector2(spawnPositionMin.x, spawnPositionMax.y));
         Gizmos.DrawLine(spawnPositionMin, new Vector2(spawnPositionMax.x, spawnPositionMin.y));
         Gizmos.DrawLine(spawnPositionMax, new Vector2(spawnPositionMin.x, spawnPositionMax.y));
         Gizmos.DrawLine(spawnPositionMax, new Vector2(spawnPositionMax.x, spawnPositionMin.y));
-    }
-
-    private void Start()
-    {
-        StartCreateHealthSupply();
-    }
-    private void StartCreateHealthSupply()
-    {
-        StartCoroutine(CreateSequence());
-    }
-    private IEnumerator CreateSequence()
-    {
-        RandomSpawnPoint();
-        CreateHealthSupply();
-        RandomTime();
-        yield return new WaitForSeconds(randomTime);
-        StartCreateHealthSupply();
-    }
-    private void RandomTime()
-    {
-        randomTime = Random.Range(spawnTimeMin, spawnTimeMax);
-    }
-    private void RandomSpawnPoint()
-    {
-        spawnPosition = new Vector2(Random.Range(spawnPositionMin.x, spawnPositionMax.x), 
-                                    Random.Range(spawnPositionMin.y, spawnPositionMax.y));
-    }
-    private void CreateHealthSupply()
-    {
-        GameObject supplyTemp;
-        supplyTemp = Instantiate(healthSupplyPrefab, spawnPosition, healthSupplyPrefab.transform.rotation);
-        // supplyTemp get component health supply and assign player health script
     }
 }

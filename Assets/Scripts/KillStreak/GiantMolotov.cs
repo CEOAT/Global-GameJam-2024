@@ -28,9 +28,9 @@ public class GiantMolotov : BaseKillStreak
             Collider2D[] detectAnts = Physics2D.OverlapCircleAll(n, damageRange);
             foreach (Collider2D ant in detectAnts)
             {
-                if (ant.GetComponent<Ant>() != null)
+                if (ant.GetComponent<IEntity>() != null)
                 {
-                    ant.transform.gameObject.GetComponent<Ant>().TakeDamage(damage,false);
+                    ant.transform.gameObject.GetComponent<IEntity>().TakeDamage(damage,false);
                 }
             }
         }
