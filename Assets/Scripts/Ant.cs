@@ -6,11 +6,11 @@ using Random = UnityEngine.Random;
 
 namespace GGJ2024
 {
-    public class Ant : MonoBehaviour
+    public class Ant : MonoBehaviour , IEntity
     {
         [Header("Health")] 
         [SerializeField] bool isMoving;
-        [SerializeField] float maxHealth = 1;
+        [SerializeField] float baseMaxHealth = 1;
         [SerializeField] float currentHealth =1;
 
         public AntState CurrentState => currentState;
@@ -34,6 +34,9 @@ namespace GGJ2024
 
         [Header("Damage")]
         public int damage = 1;
+
+        [Header("Sound")]
+        [SerializeField] AudioClip dieSound;
         
         public event Action<float> OnHealthChange;
         public event Action OnDie;
@@ -43,7 +46,7 @@ namespace GGJ2024
         Vector3 targetPosition;
         AntMovementTarget movementTarget;
         Transform cachedTransform;
-
+        AudioSource audioSource;
         public float DelayBeforeCleanUp
         {
             get => delayBeforeCleanUp;
@@ -55,6 +58,8 @@ namespace GGJ2024
         void Awake()
         {
             cachedTransform = transform;
+
+            audioSource = GetComponent<AudioSource>();
         }
 
         public void Initialize()
@@ -64,7 +69,7 @@ namespace GGJ2024
 
             isInitialized = true;
             gameObject.SetActive(true);
-            SetHealth(maxHealth);
+            SetHealth(GetMaxHealth());
             currentState = AntState.Alive;
             isMoving = true;
             targetPosition = cachedTransform.position;
@@ -104,7 +109,7 @@ namespace GGJ2024
             if (currentState != AntState.Alive)
                 return;
 
-            currentHealth = Mathf.Clamp(value, 0, maxHealth);
+            currentHealth = Mathf.Clamp(value, 0, GetMaxHealth());
             OnHealthChange?.Invoke(currentHealth);
             if (currentHealth <= 0)
             {
@@ -112,7 +117,7 @@ namespace GGJ2024
             }
         }
 
-        void Die(bool addKillCount)
+        public void Die(bool addKillCount)
         {
             HideBalloon();
             CancelShake();
@@ -122,8 +127,14 @@ namespace GGJ2024
                 KillStreakManager.Inst.AddKillCount();
             OnDie?.Invoke();
             antVFX.ExplodeKill();
+            audioSource.PlayOneShot(dieSound);
             
             Clear();
+        }
+
+        public float GetMaxHealth()
+        {
+            return KillStreakManager.Inst.killProgression.Evaluate(KillStreakManager.Inst.killStreakCount) * baseMaxHealth;
         }
 
         public void Clear()

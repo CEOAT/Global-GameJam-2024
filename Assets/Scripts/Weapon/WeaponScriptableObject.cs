@@ -8,6 +8,7 @@ public class WeaponScriptableObject : ScriptableObject
     public int weaponDamage;
     public float weaponRange;
     public float fireRate;
-    public Sprite cursorSprite;
+    public Sprite weaponSprite;
+    public AudioClip weaponSound;
 
 }

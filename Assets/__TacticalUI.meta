@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/__TacticalUI.meta
 guid: 1197758e5ff912a41a6bea5ce47eaf1c
+========
+guid: dbca96c85221de74c9aff180a8ea3579
+>>>>>>>> main:Assets/Font.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using GGJ2024;
+using UnityEngine.UI;
 
 public class PlayerFire : MonoBehaviour
 {
@@ -13,11 +14,13 @@ public class PlayerFire : MonoBehaviour
     public WeaponScriptableObject currentWeapon;
     [SerializeField] int weaponIndex = 0;
     [SerializeField] List<WeaponScriptableObject> weaponList;
+    [SerializeField] Image weaponImage;
     private bool isAttackReady = true;
     float tempTime;
 
     Collider2D[] detectAnts;
-   
+    [SerializeField] private AudioSource audioSource;
+
     
     void Update()
     {
@@ -47,9 +50,9 @@ public class PlayerFire : MonoBehaviour
            weaponIndex = weaponList.Count-1;
         }
 
-        cursor.GetComponent<SpriteRenderer>().sprite = weaponList[weaponIndex].cursorSprite;
         currentWeapon = weaponList[weaponIndex];
         playerRange = currentWeapon.weaponRange;
+        weaponImage.sprite = currentWeapon.weaponSprite;
     }
 
     void CursorMove()
@@ -75,26 +78,38 @@ public class PlayerFire : MonoBehaviour
                 return;
             
             tempTime = weaponList[weaponIndex].fireRate;
+            PlayerWeaponSound(weaponList[weaponIndex].weaponSound);
 
             detectAnts = Physics2D.OverlapCircleAll(worldPoint, playerRange);
             var ants = detectAnts
-                .Select(hit => hit.GetComponent<Ant>())
-                .Where(a => a);
+                .Select(hit => hit.GetComponent<IEntity>())
+                .Where(a => a is IEntity);
 
             Ant oneDeadAnt = null;
             foreach (var ant in ants)
             {
                 ant.TakeDamage(currentWeapon.weaponDamage);
-                if (ant.CurrentState != AntState.Alive)
+
+                if(ant is Ant)
                 {
-                    KillStreakManager.Inst.AddKillCount();
-                    oneDeadAnt = ant;
+                    Ant _ant = ant as Ant;
+                    if (_ant.CurrentState != AntState.Alive)
+                    {
+                        KillStreakManager.Inst.AddKillCount();
+                        oneDeadAnt = _ant;
+                    }
                 }
             }
 
             if (oneDeadAnt)
                 AntSpawner.Instance.TryStartFuneral(oneDeadAnt);
         }
+    }
+    
+    private void PlayerWeaponSound(AudioClip audioClip)
+    {
+        audioSource.clip = audioClip;
+        audioSource.Play();
     }
 
     void OnDrawGizmosSelected()

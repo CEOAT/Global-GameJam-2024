@@ -56,7 +56,6 @@ MonoBehaviour:
   attackTarget: {fileID: 0}
   attackCountPercentage: 0.3
   angryAntSpeedMultiplier: 5
-  isEnableSwarm: 0
   swarmController: {fileID: 0}
   funeralChance:
     chanceRate: 1
@@ -64,11 +63,28 @@ MonoBehaviour:
     boolList: 
   mourningSentencePrefixList:
   - No!!!
+  - Are you there?
+  - Rip
   antNameList:
-  - Lisa
-  - John
+  - Bobby
+  - Rattana
+  - Sompong
+  - Hanna
+  - Anderson
+  - Thanathorn
+  - Napatsorn
+  - Somchai
+  - Phensri
+  - Somporn
+  - Hirochi
   shoutSentenceList:
   - No!!!!!!!!
+  - Murder!!!!!
+  - WRYYYYYYY!!
+  - Revenge!
+  - Charge!!!
+  - AHHHHHHH
+  - YAMERO!
   mourningDistance: 1
 --- !u!1 &8338097134574160891
 GameObject:

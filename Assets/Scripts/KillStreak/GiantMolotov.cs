@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using GGJ2024;
+using Sirenix.Utilities;
 using UnityEngine;
 
 public class GiantMolotov : BaseKillStreak
@@ -8,9 +9,16 @@ public class GiantMolotov : BaseKillStreak
     [SerializeField] float damageRange = 3f;
     [SerializeField] float damageTime = 5f;
     [SerializeField] GameObject fireArea;
+    [SerializeField] float burnEverySec;
+    float burnTime = 0;
     List<Vector2> damageArea = new List<Vector2>();
+
+    AudioSource audioSource;
     
-    
+    private void Awake() {
+        audioSource = GetComponent<AudioSource>();
+    }
+
     public override void OnFire(Vector2 mousePosition)
     {
         damageArea.Add(mousePosition);
@@ -23,16 +31,49 @@ public class GiantMolotov : BaseKillStreak
     {   
         base.Update();
 
-        foreach(var n in damageArea)
+        PlayBurnSound();
+
+        if(damageArea.IsNullOrEmpty())
+            return;
+
+        burnTime -= Time.deltaTime;
+        BurnEntity();
+    }
+
+    void PlayBurnSound()
+    {
+        if(damageArea.IsNullOrEmpty())
         {
-            Collider2D[] detectAnts = Physics2D.OverlapCircleAll(n, damageRange);
-            foreach (Collider2D ant in detectAnts)
+            audioSource.Stop();
+            return;
+        }
+        else
+        {
+            if(!audioSource.isPlaying)
             {
-                if (ant.GetComponent<Ant>() != null)
+                audioSource.Play();
+                return;
+            }
+        }
+    }
+
+    void BurnEntity()
+    {
+        if(burnTime <= 0)
+        {
+            foreach(var n in damageArea)
+            {
+                Collider2D[] detectAnts = Physics2D.OverlapCircleAll(n, damageRange);
+                foreach (Collider2D ant in detectAnts)
                 {
-                    ant.transform.gameObject.GetComponent<Ant>().TakeDamage(damage,false);
+                    if (ant.GetComponent<IEntity>() != null)
+                    {
+                        ant.transform.gameObject.GetComponent<IEntity>().TakeDamage(damage,false);
+                    }
                 }
             }
+
+            burnTime = burnEverySec;
         }
     }
 

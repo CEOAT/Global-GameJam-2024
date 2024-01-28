@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9a1afcc632d2fb41b925b120b2397e1, type: 3}
   m_Name: Cannon
   m_EditorClassIdentifier: 
-  weaponDamage: 5
-  weaponRange: 5
-  fireRate: 10
-  cursorSprite: {fileID: 21300000, guid: d95de0c3bdf3e5f44886398e6e43f17f, type: 3}
+  weaponDamage: 3
+  weaponRange: 2.25
+  fireRate: 1.35
+  weaponSprite: {fileID: 21300000, guid: eeed06d14a2408e4289177f43cd07464, type: 3}
+  weaponSound: {fileID: 8300000, guid: 8a94348209be53f4591e8cf05fda32ed, type: 3}

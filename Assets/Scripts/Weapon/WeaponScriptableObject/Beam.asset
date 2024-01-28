@@ -10,9 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f9a1afcc632d2fb41b925b120b2397e1, type: 3}
-  m_Name: Paw
+  m_Name: Beam
   m_EditorClassIdentifier: 
   weaponDamage: 1
-  weaponRange: 1
-  fireRate: 1
-  cursorSprite: {fileID: 21300000, guid: 219217f2836d4a74e839fb06959e4078, type: 3}
+  weaponRange: 1.5
+  fireRate: 0.6
+  weaponSprite: {fileID: 21300000, guid: 1345486026de3984d8d5c872ddda3c31, type: 3}
+  weaponSound: {fileID: 8300000, guid: 1d5280203e97d2341927f926a6479a3d, type: 3}

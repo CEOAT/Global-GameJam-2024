@@ -1,18 +1,21 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HealthSupply : MonoBehaviour
+public class HealthSupply : MonoBehaviour, IEntity
 {
-    [SerializeField] private float healValue;
-    // public player health script
+    public int healValue;
+    public Action<int> onHeal;
 
-    private void OnDestroy() 
+    public void TakeDamage(float damage, bool addKillCount = true)
     {
-        Heal();
+        Die(false);
     }
-    private void Heal()
+
+    public void Die(bool addKillCount)
     {
-        // use function heal in player health script        
+        onHeal?.Invoke(healValue);
+        Destroy(this.gameObject);
     }
 }
