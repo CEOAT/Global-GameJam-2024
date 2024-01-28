@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using GGJ2024;
+using UnityEngine.UI;
 
 public class PlayerFire : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class PlayerFire : MonoBehaviour
     public WeaponScriptableObject currentWeapon;
     [SerializeField] int weaponIndex = 0;
     [SerializeField] List<WeaponScriptableObject> weaponList;
+    [SerializeField] Image weaponImage;
     private bool isAttackReady = true;
     float tempTime;
 
@@ -47,9 +49,9 @@ public class PlayerFire : MonoBehaviour
            weaponIndex = weaponList.Count-1;
         }
 
-        cursor.GetComponent<SpriteRenderer>().sprite = weaponList[weaponIndex].cursorSprite;
         currentWeapon = weaponList[weaponIndex];
         playerRange = currentWeapon.weaponRange;
+        weaponImage.sprite = currentWeapon.weaponSprite;
     }
 
     void CursorMove()
