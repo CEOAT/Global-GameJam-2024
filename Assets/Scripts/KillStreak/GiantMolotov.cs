@@ -12,8 +12,13 @@ public class GiantMolotov : BaseKillStreak
     [SerializeField] float burnEverySec;
     float burnTime = 0;
     List<Vector2> damageArea = new List<Vector2>();
+
+    AudioSource audioSource;
     
-    
+    private void Awake() {
+        audioSource = GetComponent<AudioSource>();
+    }
+
     public override void OnFire(Vector2 mousePosition)
     {
         damageArea.Add(mousePosition);
@@ -26,11 +31,30 @@ public class GiantMolotov : BaseKillStreak
     {   
         base.Update();
 
+        PlayBurnSound();
+
         if(damageArea.IsNullOrEmpty())
             return;
 
         burnTime -= Time.deltaTime;
         BurnEntity();
+    }
+
+    void PlayBurnSound()
+    {
+        if(damageArea.IsNullOrEmpty())
+        {
+            audioSource.Stop();
+            return;
+        }
+        else
+        {
+            if(!audioSource.isPlaying)
+            {
+                audioSource.Play();
+                return;
+            }
+        }
     }
 
     void BurnEntity()
