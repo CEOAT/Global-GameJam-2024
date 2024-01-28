@@ -104,7 +104,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isMoving: 0
-  maxHealth: 1
+  baseMaxHealth: 2
   currentHealth: 1
   currentState: 0
   speedMultiplier: 1
