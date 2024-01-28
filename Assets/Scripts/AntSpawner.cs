@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Sirenix.OdinInspector;
+using Sirenix.Utilities;
 using UnityEngine;
 
 namespace GGJ2024
@@ -7,16 +8,17 @@ namespace GGJ2024
     public class AntSpawner : Spawner<Ant>
     {
         public static AntSpawner Instance { get; private set; }
-        
         [SerializeField] Transform spawnPosition;
-        [SerializeField] SwarmController swarmController;
-
+        
         [Header("Attacking")] 
         [SerializeField] AntTarget attackTarget;
         [Range(0, 1f)] 
         [SerializeField] float attackCountPercentage = 0.5f;
         [SerializeField] float angryAntSpeedMultiplier = 5f;
 
+        [Header("Swarm")]
+        [SerializeField] SwarmController swarmController;
+       
         [Header("Funeral")]
         
         [Tooltip("Chance that dead ant will have a funeral")]
@@ -35,7 +37,8 @@ namespace GGJ2024
         StackedList<Ant> funeralTargetStack = new StackedList<Ant>();
 
         Dictionary<Ant, Ant> OnGoingFuneralDict = new Dictionary<Ant, Ant>();
-        
+
+        protected override int CurrentCount => base.CurrentCount - busyStack.Count;
 
         float elapsedTime;
 
@@ -67,6 +70,47 @@ namespace GGJ2024
             {
                 if (freeRoamStack.TryPop(out var readyToMournAnt))
                     OrderToFuneral(readyToMournAnt);
+            }
+        }
+
+        [Button]
+        public void EnableSwarm(int amount = 200)
+        {
+            if (swarmController == null)
+                return;
+
+            var antList = new List<Ant>();
+            for (int i = 0; i < amount; i++)
+            {
+                if (freeRoamStack.TryPop(out var ant))
+                    antList.Add(ant);
+                else
+                    break;
+            }
+            
+            var lackingAmount = amount - antList.Count;
+            if (lackingAmount > 0)
+            {
+                for (int i = 0; i < lackingAmount; i++)
+                    antList.Add(Spawn());
+            }
+            
+            swarmController.Register(antList.ToArray());
+            foreach (var ant in antList)
+                busyStack.Push(ant);
+        }
+
+        [Button]
+        public void ClearSwarm()
+        {
+            if (swarmController == null)
+                return;
+
+            var ants = swarmController.Release();
+            foreach (var ant in ants)
+            {
+                busyStack.Remove(ant);
+                OrderToFreeRoam(ant);
             }
         }
 
@@ -151,6 +195,9 @@ namespace GGJ2024
 
         void NotifyDead(Ant ant)
         {
+            if (swarmController)
+                swarmController.Unregister(ant);
+            
             freeRoamStack.Remove(ant);
             attackingStack.Remove(ant);
             busyStack.Remove(ant);

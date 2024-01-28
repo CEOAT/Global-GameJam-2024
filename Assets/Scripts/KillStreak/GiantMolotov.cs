@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using GGJ2024;
+using Sirenix.Utilities;
 using UnityEngine;
 
 public class GiantMolotov : BaseKillStreak
@@ -8,6 +9,8 @@ public class GiantMolotov : BaseKillStreak
     [SerializeField] float damageRange = 3f;
     [SerializeField] float damageTime = 5f;
     [SerializeField] GameObject fireArea;
+    [SerializeField] float burnEverySec;
+    float burnTime = 0;
     List<Vector2> damageArea = new List<Vector2>();
     
     
@@ -23,16 +26,30 @@ public class GiantMolotov : BaseKillStreak
     {   
         base.Update();
 
-        foreach(var n in damageArea)
+        if(damageArea.IsNullOrEmpty())
+            return;
+
+        burnTime -= Time.deltaTime;
+        BurnEntity();
+    }
+
+    void BurnEntity()
+    {
+        if(burnTime <= 0)
         {
-            Collider2D[] detectAnts = Physics2D.OverlapCircleAll(n, damageRange);
-            foreach (Collider2D ant in detectAnts)
+            foreach(var n in damageArea)
             {
-                if (ant.GetComponent<Ant>() != null)
+                Collider2D[] detectAnts = Physics2D.OverlapCircleAll(n, damageRange);
+                foreach (Collider2D ant in detectAnts)
                 {
-                    ant.transform.gameObject.GetComponent<Ant>().TakeDamage(damage,false);
+                    if (ant.GetComponent<IEntity>() != null)
+                    {
+                        ant.transform.gameObject.GetComponent<IEntity>().TakeDamage(damage,false);
+                    }
                 }
             }
+
+            burnTime = burnEverySec;
         }
     }
 

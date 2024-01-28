@@ -6,7 +6,7 @@ using Random = UnityEngine.Random;
 
 namespace GGJ2024
 {
-    public class Ant : MonoBehaviour
+    public class Ant : MonoBehaviour , IEntity
     {
         [Header("Health")] 
         [SerializeField] bool isMoving;
@@ -38,10 +38,10 @@ namespace GGJ2024
         public event Action<float> OnHealthChange;
         public event Action OnDie;
         public event Action OnClearFinish;
+        
         bool isInitialized;
         Vector3 targetPosition;
         AntMovementTarget movementTarget;
-
         Transform cachedTransform;
 
         public float DelayBeforeCleanUp
@@ -112,7 +112,7 @@ namespace GGJ2024
             }
         }
 
-        void Die(bool addKillCount)
+        public void Die(bool addKillCount)
         {
             HideBalloon();
             CancelShake();

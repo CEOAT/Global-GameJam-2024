@@ -6,10 +6,10 @@ using UnityEngine;
 public abstract class BaseKillStreak : MonoBehaviour
 {
     public int maxAmmo;
-    public int currentAmmo;
+    protected int currentAmmo;
     public int damage;
     public float fireRate;
-    public float tempTime;
+    protected float tempTime;
 
     public Action onOutOfAmmo; 
 

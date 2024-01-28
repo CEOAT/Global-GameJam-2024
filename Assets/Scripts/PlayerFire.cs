@@ -78,17 +78,22 @@ public class PlayerFire : MonoBehaviour
 
             detectAnts = Physics2D.OverlapCircleAll(worldPoint, playerRange);
             var ants = detectAnts
-                .Select(hit => hit.GetComponent<Ant>())
-                .Where(a => a);
+                .Select(hit => hit.GetComponent<IEntity>())
+                .Where(a => a is IEntity);
 
             Ant oneDeadAnt = null;
             foreach (var ant in ants)
             {
                 ant.TakeDamage(currentWeapon.weaponDamage);
-                if (ant.CurrentState != AntState.Alive)
+
+                if(ant is Ant)
                 {
-                    KillStreakManager.Inst.AddKillCount();
-                    oneDeadAnt = ant;
+                    Ant _ant = ant as Ant;
+                    if (_ant.CurrentState != AntState.Alive)
+                    {
+                        KillStreakManager.Inst.AddKillCount();
+                        oneDeadAnt = _ant;
+                    }
                 }
             }
 

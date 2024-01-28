@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using DG.Tweening;
+using Sirenix.Utilities;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -8,7 +10,7 @@ namespace GGJ2024
     [RequireComponent(typeof(SpriteRenderer))]
     public class SwarmController : MonoBehaviour
     {
-        public Vector2 FillerSize
+        public float FillerSize
         {
             get => fillerSize;
             set
@@ -17,8 +19,8 @@ namespace GGJ2024
                 RefreshVertices();
             }
         }
-
-        public Vector2 Spacing
+        
+        public float Spacing
         {
             get => spacing;
             set
@@ -27,9 +29,14 @@ namespace GGJ2024
                 RefreshVertices();
             }
         }
-        
-        [SerializeField] Vector2 fillerSize = Vector2.one;
-        [SerializeField] Vector2 spacing;
+
+        [SerializeField] bool isShowSprite;
+        [SerializeField] float fadeInDelay = 2f;
+        [SerializeField] float fadeInDuration = 1f;
+        [SerializeField] float stayDuration = 1f;
+        [SerializeField] float fadeOutDuration = 1f;
+        [SerializeField] float fillerSize = 0.1f;
+        [SerializeField] float spacing = 0.1f;
         
         public float spread = 1f;
         public Vector2 randomMagnitude;
@@ -42,7 +49,7 @@ namespace GGJ2024
         void Awake()
         {
             spriteRenderer = GetComponent<SpriteRenderer>();
-            spriteRenderer.enabled = false;
+            spriteRenderer.DOFade(0, 0);
             RefreshVertices();
         }
 
@@ -59,6 +66,12 @@ namespace GGJ2024
 
         void RefreshVertices()
         {
+            if (fillerSize == 0)
+                return;
+
+            if (spacing == 0)
+                return;
+            
             vertexList.Clear();
             var sprite = spriteRenderer.sprite;
             var texture = sprite.texture;
@@ -73,7 +86,7 @@ namespace GGJ2024
             var end = worldBounds.max;
 
             // Use proper for loops instead of ugly and error prone while ;)
-            for (var worldY = start.y; worldY < end.y; worldY += fillerSize.y + spacing.y)
+            for (var worldY = start.y; worldY < end.y; worldY += fillerSize + spacing)
             {
                 // convert the worldY to pixel coordinate
                 var pixelY =
@@ -85,7 +98,7 @@ namespace GGJ2024
                     continue;
                 }
 
-                for (var worldX = start.x; worldX < end.x; worldX += fillerSize.x + spacing.x)
+                for (var worldX = start.x; worldX < end.x; worldX += fillerSize + spacing)
                 {
                     // convert worldX to pixel coordinate
                     var pixelX = Mathf.RoundToInt((worldX - worldBounds.center.x + worldBounds.size.x / 2f) *
@@ -120,7 +133,7 @@ namespace GGJ2024
             foreach (var movement in movementList)
             {
                 if (index >= vertexCount)
-                    return;
+                    index = 0;
 
                 var targetPos = transform.TransformPoint(vertexList[index] * spread) + GetRandomNoise();
                 movement.SetMovementTarget(new PositionTarget(targetPos), true);
@@ -134,14 +147,35 @@ namespace GGJ2024
                 Random.Range(-randomMagnitude.y, randomMagnitude.y));
         }
 
-        public void Register(Ant ant)
+        public void Register(Ant[] ant)
         {
-            movementList.Add(ant);
+            if (ant.IsNullOrEmpty())
+                return;
+            
+            movementList.AddRange(ant);
+            if (isShowSprite)
+            {
+                spriteRenderer.DOKill();
+                var seq = DOTween.Sequence();
+                seq.AppendInterval(fadeInDelay);
+                seq.Append(spriteRenderer.DOFade(1f, fadeInDuration));
+                seq.AppendInterval(stayDuration);
+                seq.Append(spriteRenderer.DOFade(0f, fadeOutDuration));
+                seq.SetTarget(spriteRenderer);
+            }
+           
         }
 
         public void Unregister(Ant ant)
         {
             movementList.Remove(ant);
+        }
+
+        public Ant[] Release()
+        {
+            var ants = movementList.ToArray();
+            movementList.Clear();
+            return ants;
         }
     }
 }

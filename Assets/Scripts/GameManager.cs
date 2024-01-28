@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using GGJ2024;
 
 public class GameManager : MonoBehaviour
 {
@@ -18,7 +19,14 @@ public class GameManager : MonoBehaviour
         isGameOver = true;
 
         //SwarmController
+        AntSpawner.Instance.EnableSwarm();
+        StartCoroutine(ShowUIGameOver());
 
+    }
+
+    IEnumerator ShowUIGameOver()
+    {
+        yield return new WaitForSeconds(5f);
         UIGameover.OnGameover();
     }
 }

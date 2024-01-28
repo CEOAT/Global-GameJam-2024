@@ -29,6 +29,13 @@ namespace GGJ2024
             return false;
         }
 
+        public T[] PopAll()
+        {
+            var results = items.ToArray();
+            items.Clear();
+            return results;
+        }
+
         public T Pop()
         {
             T temp = items[items.Count - 1];
